@@ -1,9 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-
-import Clock from "./component/clock";
-import Form from "./component/form";
-import ColorPicker from "./component/colorPicker";
+import "./style.css";
 
 const rootElem = document.getElementById("root");
 
@@ -15,9 +12,6 @@ const root = ReactDOM.createRoot(rootElem);
 
 root.render(
   <>
-    <Clock />
-    <Form />
-    <ColorPicker />
+    <button onClick={() => alert("Hello, react template :D")}>Click me</button>
   </>
 );
-
