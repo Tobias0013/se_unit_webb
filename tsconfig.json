@@ -8,5 +8,6 @@
       "strict": true,
       "esModuleInterop": true
     },
-    "include": ["server/server.ts"]
+    "exclude": ["dist"],
+    "include": ["client/index.tsx"]
   }

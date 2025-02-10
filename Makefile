@@ -1,8 +1,22 @@
 .PHONY: all $(MAKECMDGOALS)
 
 default:
-	@echo Hello o/. this is a makefile
+	@echo "Hello o/. this is a makefile ^_^."
+	@echo ""
+	@${MAKE} help -s
 
+help:
+	@echo "Available commands:"
+	@echo "  make install        - Install project dependencies"
+	@echo "  make i              - Alias for install"
+	@echo "  make client         - Run project client"
+	@echo "  make start          - Start the project"
+	@echo "  make build-client   - Build project client"
+	@echo "  make build          - Build the project"
+	@echo "  make start-build    - Start the built project"
+	@echo "  make clean          - Clean up build folders"
+	@echo "  make clean-node     - Clean up node_modules"
+	@echo "  make clean-all      - Clean up build folders and node_modules"
 
 # Install project dependencies.
 install:
@@ -15,21 +29,15 @@ i: install
 client:
 	@npx webpack-dev-server --mode development --open
 
-server:
-	@nodemon server/server.ts
-
 start:
-	@concurrently "make client" "make server"
+	@concurrently "make client"
 
 # Build project or parts of project.
 build-client:
 	@npx webpack --mode production
 
-build-server:
-	@npx tsc
-
 build:
-	@concurrently "make build-client" "make build-server"
+	@concurrently "make build-client"
 
 start-build:
 	@start http://localhost:3000 && node dist-server/server.js
@@ -38,7 +46,6 @@ start-build:
 clean:
 	@echo Clean up build folders
 	@rm -r dist
-	@rm -r dist-server
 
 clean-node:
 	@echo Clean up node_modules
