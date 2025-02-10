@@ -52,5 +52,5 @@ clean-node:
 	@rm -r node_modules
 
 clean-all:
-	concurrently "make clean-build" "make clean-node"
+	concurrently "make clean" "make clean-node"
 
