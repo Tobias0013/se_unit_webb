@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import "./style.css";
-import LoginPage from "./page/login/login";
+import LoginPage from "./page/auth/login";
 
 const rootElem = document.getElementById("root");
 
