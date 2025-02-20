@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import "./login.css";
+import "./auth.css";
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -19,10 +19,10 @@ export default function LoginPage() {
   };
 
   return (
-    <section className="login-section">
-      <div className="login-container">
-        <form onSubmit={onFormSubmit}>
-          <h1 className="login-h1">Log in</h1>
+    <section className="auth-section">
+      <div className="auth-container">
+        <form className="auth-form" onSubmit={onFormSubmit}>
+          <h1 className="auth-h1">Log in</h1>
           <input
             type="text"
             placeholder="Username"
@@ -34,14 +34,17 @@ export default function LoginPage() {
             onChange={(e) => setPassword(e.target.value)}
           />
           <p className="error-message">{errorMessage}</p>
-          <div className="login-btn-container">
-            <button className="login-btn">Log in</button>
+          <div className="auth-btn-container">
             <button
-              className="login-btn"
-              onClick={(e) => navigate("/register")}
+              className="auth-btn alt"
+              type="button"
+              onClick={() => {
+                navigate("/register");
+              }}
             >
               Register
             </button>
+            <button className="auth-btn">Log in</button>
           </div>
         </form>
       </div>
