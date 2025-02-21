@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { toast } from "react-tostify";
+import { toast } from "react-toastify";
 import { IDevice } from '../controller/deviceController';
 
 interface DeviceCardProps {
