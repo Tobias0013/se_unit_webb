@@ -4,6 +4,8 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import "./style.css";
 import LoginPage from "./page/auth/login";
 import RegisterPage from "./page/auth/register";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const rootElem = document.getElementById("root");
 
@@ -25,5 +27,13 @@ root.render(
       </Routes>
     </BrowserRouter>
   </>
+);
+
+ReactDOM.render(
+  <React.StrictMode>
+    <App />
+    <ToastContainer position="top-right" autoClose={5000} />
+  </React.StrictMode>,
+  document.getElementById('root')
 );
 
