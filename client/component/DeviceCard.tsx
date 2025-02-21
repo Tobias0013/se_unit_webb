@@ -5,14 +5,14 @@ import { IDevice } from '../controller/deviceController';
 interface DeviceCardProps {
   device: IDevice | null;  // Allow null to handle potential missing data
   onToggle: (device: IDevice) => Promise<void>;
-  onSetFanSpeed: (device: IDevice, speed: number) => Promise<void>;
+  onUpdateFanSpeed: (device: IDevice, speed: number) => Promise<void>;
 }
 
 /**
  * Renders single device card with controls depending on device type (lamp, fan, sensor).
  * Some fallback logic if device data is missing / invalid.
  */
-const DeviceCard: React.FC<DeviceCardProps> = ({ device, onToggle, onSetFanSpeed }) => {
+const DeviceCard: React.FC<DeviceCardProps> = ({ device, onToggle, onUpdateFanSpeed }) => {
   // Safeguard: if device is null or missing critical fields, show fallback
   if (!device) {
     return (
@@ -22,7 +22,7 @@ const DeviceCard: React.FC<DeviceCardProps> = ({ device, onToggle, onSetFanSpeed
     );
   }
 
-  const { id, name, type, isOn, value } = device;
+  const { id, name, type, status, value } = device;
 
   // Handler for toggling device on/off
   const handleToggleClick = useCallback(async () => {
@@ -44,7 +44,7 @@ const DeviceCard: React.FC<DeviceCardProps> = ({ device, onToggle, onSetFanSpeed
       try {
         const speed = parseInt(e.target.value, 10);
         if (type === 'fan') {
-          await onSetFanSpeed(device, speed);
+          await onUpdateFanSpeed(device, speed);
         }
       } catch (err) {
         console.error('Error setting fan speed:', err);
@@ -52,18 +52,18 @@ const DeviceCard: React.FC<DeviceCardProps> = ({ device, onToggle, onSetFanSpeed
         toast.error("Failed to set fan speed");
       }
     },
-    [device, onSetFanSpeed, type]
+    [device, onUpdateFanSpeed, type]
   );
 
   return (
     <div className="device-card">
-      <h3 className="device-name">{name ?? 'Unknown Device'}</h3>
-      <p className="device-type">{type ?? 'Unknown Type'}</p>
+      <h3 className="device-name">{name || 'Unknown Device'}</h3>
+      <p className="device-type">{type || 'Unknown Type'}</p>
 
       {/* Toggle for lamp/fan */}
       {(type === 'lamp' || type === 'fan') && (
         <button className="toggle-btn" onClick={handleToggleClick}>
-          {isOn ? 'Turn Off' : 'Turn On'}
+          {status ? 'Turn Off' : 'Turn On'}
         </button>
       )}
 
@@ -78,7 +78,7 @@ const DeviceCard: React.FC<DeviceCardProps> = ({ device, onToggle, onSetFanSpeed
             value={value ?? 0}
             onChange={handleFanSpeedChange}
           />
-          <span>{value ?? 0}</span>
+          <span>{value || 0}</span>
         </div>
       )}
 

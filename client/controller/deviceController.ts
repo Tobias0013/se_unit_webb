@@ -4,15 +4,17 @@ export interface IDevice {
   id: string;
   name: string;
   type: 'lamp' | 'fan' | 'sensor';
-  isOn?: boolean;   // on/off for lamps / fans
+  // Using "status" to indicate on/off instead of isOn:
+  status?: boolean;
+  // For sensor data (temperature) or fan speed:
   value?: number;  // temperature / fan speed / other
   room?: string;   // Living Room, Kitchen, Bedroom Bathroom, etc.
 }
 
-/** Fetching all devices from backend */
+/** GET /devices. Fetching all devices from backend */
 export async function fetchDevices(): Promise<IDevice[]> {
     try {
-      const response = await axios.get('/api/devices');
+      const response = await axios.get('/devices');
       return response.data;
     } catch (error: any) {
       console.error('Error fetching devices:', error);
@@ -20,22 +22,34 @@ export async function fetchDevices(): Promise<IDevice[]> {
     }
   }
 
-/** Toggling device's on/off state (lamp / fan) */
-export async function toggleDevice(deviceId: string, newState: boolean): Promise<void> {
-  try {
-    await axios.post(`/api/devices/${deviceId}/toggle`, { state: newState });
-  } catch (error: any) {
-    console.error('Error toggling device:', error);
-    throw new Error(`Failed to toggle device with ID: ${deviceId}).`);
-  }
+/** POST /devices/{device_id}/toggle. Toggling device's on/off state (lamp / fan) */
+export async function toggleDevice(
+    deviceId: string,
+    newState: boolean
+): Promise<void> {
+    try {
+      const status = newState ? "on" : "off";
+      await axios.post(`/devices/${deviceId}/toggle`, { status });
+    } catch (error: any) {
+      console.error("Error toggling device:", error);
+      throw new Error(
+        error?.message || `Failed to toggle device with ID ${deviceId}.`
+      );
+    }
 }
 
-/** Setting fan speed */
-export async function setFanSpeed(deviceId: string, speed: number): Promise<void> {
-  try {
-    await axios.post(`/api/devices/${deviceId}/fan-speed`, { speed });
-  } catch (error) {
-    console.error('Error setting fan speed:', error);
-    throw new Error(`Failed to set fan speed (ID: ${deviceId}).`);
-  }
+/** PUT /devices/{device_id}. Setting fan speed */
+export async function updateFanSpeed(
+    deviceId: string,
+    speed: number
+): Promise<void> {
+    try {
+      await axios.put(`/devices/${deviceId}`, { value: speed });
+    } catch (error: any) {
+      console.error("Error updating fan speed:", error);
+      throw new Error(
+        error?.message ||
+          `Failed to update fan speed for device with ID ${deviceId}.`
+      );
+    }
 }
