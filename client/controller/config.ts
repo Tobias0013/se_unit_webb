@@ -6,7 +6,7 @@ function getAPIURL() {
         || typeof url !== "string"
     ) {
         stopProcess("Missing appropriate API in environment file")
-        return -1;
+        return "";
     }
     return url;
 }
