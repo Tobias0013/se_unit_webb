@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import "./auth.css";
+import { register } from "../../controller/API/auth";
+import { handleAPIError } from "../../controller/API/connection";
 
 export default function RegisterPage() {
   const navigate = useNavigate();
@@ -10,14 +12,19 @@ export default function RegisterPage() {
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>("");
 
-  const onFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const onFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!username || !password) {
       setErrorMessage("Please fill in all fields");
+      return;
     }
-    console.log("Username: ", username);
-    console.log("Password: ", password);
-    console.log("Is Admin: ", isAdmin);
+    try {
+      await register(username, password, isAdmin);
+    } catch (error) {
+      const message = handleAPIError(error, "Register page");
+      setErrorMessage(message);
+    }
+    navigate("/login");
   };
 
   return (
@@ -40,7 +47,7 @@ export default function RegisterPage() {
               className="auth-checkbox"
               onClick={(e) => setIsAdmin(!isAdmin)}
             >
-              <input type="checkbox" checked={isAdmin} />
+              <input type="checkbox" checked={isAdmin} readOnly />
               <label htmlFor="isAdmin">Register as Admin</label>
             </div>
           </div>
