@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import "./auth.css";
+import { login } from "../../controller/API/auth";
+import { handleAPIError } from "../../controller/API/connection";
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -9,13 +11,20 @@ export default function LoginPage() {
   const [password, setPassword] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string>("");
 
-  const onFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const onFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!username || !password) {
       setErrorMessage("Please fill in all fields");
+      return;
     }
-    console.log("Username: ", username);
-    console.log("Password: ", password);
+    try {
+      const resp = await login(username, password);
+      sessionStorage.setItem("token", resp.data.token);
+    } catch (error) {
+      const message = handleAPIError(error, "Login page");
+      setErrorMessage(message);
+    }
+    navigate("/dashboard"); //TODO: check if correct path
   };
 
   return (
