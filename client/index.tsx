@@ -1,6 +1,5 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import "./style.css";
 import HomePage from "./page/home";
 import LoginPage from "./page/auth/login";
@@ -10,6 +9,8 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Header from "./component/header/header";
 import LogOut from "./page/auth/logOut";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import MainPage from "./page/Mainpage/MainPage";
 
 const rootElem = document.getElementById("root");
 if (!rootElem) {
@@ -25,6 +26,7 @@ root.render(
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/devices" element={<DevicesPage />} />
+        <Route path="/main" element={<MainPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/logout" element={<LogOut />} />
