@@ -23,7 +23,7 @@ export default axios.create({
 export function handleAPIError(error: any, messagePrefix: string): string {
     console.log(`Error in ${messagePrefix}:`, error);
     if (error.response) {
-        return `Error: ${error.response.status} ${error.response.data}`;
+        return `${error.response.data.message}`;
     }
     else if (error.request) {
         return "Error: No response received";
