@@ -20,11 +20,11 @@ export default function LoginPage() {
     try {
       const resp = await login(username, password);
       sessionStorage.setItem("token", resp.data.token);
+      navigate("/dashboard"); //TODO: check if correct path
     } catch (error) {
       const message = handleAPIError(error, "Login page");
       setErrorMessage(message);
     }
-    navigate("/dashboard"); //TODO: check if correct path
   };
 
   return (

@@ -20,11 +20,11 @@ export default function RegisterPage() {
     }
     try {
       await register(username, password, isAdmin);
+      navigate("/login");
     } catch (error) {
       const message = handleAPIError(error, "Register page");
       setErrorMessage(message);
     }
-    navigate("/login");
   };
 
   return (
