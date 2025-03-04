@@ -4,6 +4,10 @@ import { useNavigate } from "react-router-dom";
 import "./auth.css";
 import { register } from "../../controller/API/auth";
 import { handleAPIError } from "../../controller/API/connection";
+import {
+  getPasswordStrength,
+  validPassowrd,
+} from "../../controller/passwordChecker";
 
 export default function RegisterPage() {
   const navigate = useNavigate();
@@ -11,11 +15,16 @@ export default function RegisterPage() {
   const [password, setPassword] = useState<string>("");
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>("");
+  const [strengthText, setStrengthText] = useState<string>("");
 
   const onFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!username || !password) {
       setErrorMessage("Please fill in all fields");
+      return;
+    }
+    if (!validPassowrd(password)) {
+      setErrorMessage("Password is too weak");
       return;
     }
     try {
@@ -25,6 +34,12 @@ export default function RegisterPage() {
       const message = handleAPIError(error, "Register page");
       setErrorMessage(message);
     }
+  };
+
+  const onPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPassword(e.target.value);
+    const strength = getPasswordStrength(e.target.value);
+    setStrengthText(`Password strength: ${strength.value}`);
   };
 
   return (
@@ -37,10 +52,11 @@ export default function RegisterPage() {
             placeholder="Username"
             onChange={(e) => setUsername(e.target.value)}
           />
+          <p style={{ fontSize: "1.75rem" }}>{strengthText}</p>
           <input
             type="password"
             placeholder="Password"
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={onPasswordChange}
           />
           <div className="auth-checkbox-container">
             <div

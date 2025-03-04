@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import "./auth.css";
 import { login } from "../../controller/API/auth";
 import { handleAPIError } from "../../controller/API/connection";
+import { setToken } from "../../controller/jwtToken";
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -19,7 +20,7 @@ export default function LoginPage() {
     }
     try {
       const resp = await login(username, password);
-      sessionStorage.setItem("token", resp.data.token);
+      setToken(resp.data.token);
       navigate("/dashboard"); //TODO: check if correct path
     } catch (error) {
       const message = handleAPIError(error, "Login page");

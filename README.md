@@ -26,6 +26,8 @@ To install and set up this project, follow these steps:
    - Open the `.env` file and add the following environment variables:
      ```
      //TODO: ADD ENVIROMENT VARIABLES
+     API_URL=<url to backend>
+     MOCK=<true/false> (mock api)
      ```
 4. Then run the project with `npm start`
 
