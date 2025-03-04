@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import "./auth.css";
+import { login } from "../../controller/API/auth";
+import { handleAPIError } from "../../controller/API/connection";
+import { setToken } from "../../controller/jwtToken";
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -9,13 +12,20 @@ export default function LoginPage() {
   const [password, setPassword] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string>("");
 
-  const onFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const onFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!username || !password) {
       setErrorMessage("Please fill in all fields");
+      return;
     }
-    console.log("Username: ", username);
-    console.log("Password: ", password);
+    try {
+      const resp = await login(username, password);
+      setToken(resp.data.token);
+      navigate("/dashboard"); //TODO: check if correct path
+    } catch (error) {
+      const message = handleAPIError(error, "Login page");
+      setErrorMessage(message);
+    }
   };
 
   return (
