@@ -1,0 +1,62 @@
+/* CSS file for header component */
+
+header {
+    display: flex;
+    width: 100%;
+    height: fit-content;
+    align-items: center;
+    border-bottom: #acc4b5 solid 1px;
+}
+
+header a {
+    text-decoration: none;
+    color: black;
+}
+
+/* Header Logo */
+
+.header-logo {
+    width: fit-content;
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-left: 4rem;
+}
+
+.header-logo > p {
+    color: #3a3a3a;
+    text-align: left;
+    font-size: 4rem;
+    line-height: 4.2rem;
+    font-weight: 700;
+}
+
+/* Navigation */
+
+.header-nav {
+    margin-left: auto;
+}
+
+.header-navbar {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    list-style-type: none;
+    padding-left: 0;
+
+    margin-right: 4rem;
+}
+
+.header-navbar > li > a {
+    padding: 1rem 1.2rem;
+    text-decoration: none;
+    font-size: 1.8rem;
+    white-space: nowrap;
+}
+
+.header-navbar > li :hover {
+    background-color: rgb(237, 237, 237);
+    border-radius: 9px;
+}
