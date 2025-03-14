@@ -6,6 +6,19 @@ import { login } from "../../controller/API/auth";
 import { handleAPIError } from "../../controller/API/connection";
 import { setToken } from "../../controller/jwtToken";
 
+
+/**
+ * LoginPage component renders a login form for user authentication.
+ * 
+ * This component handles the following:
+ * - Manages state for username, password, and error messages.
+ * - Handles form submission and validates input fields.
+ * - Calls the login function to authenticate the user.
+ * - Navigates to the dashboard upon successful login.
+ * - Displays error messages for invalid input or failed login attempts.
+ * 
+ * @returns {JSX.Element} The rendered login page component.
+ */
 export default function LoginPage() {
   const navigate = useNavigate();
   const [username, setUsername] = useState<string>("");
