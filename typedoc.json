@@ -1,0 +1,13 @@
+{
+  "entryPoints": ["client/**/*.ts", "client/**/*.tsx"],  
+  "out": "docs/html",  
+  "tsconfig": "tsconfig.json",  
+  "exclude": ["node_modules", "dist"],  
+  "includeVersion": false,  
+  "excludeExternals": true,  
+  "excludePrivate": true,  
+  "excludeProtected": true,  
+  "hideGenerator": true,  
+  "theme": "default",
+  "readme": "README.md",
+}
