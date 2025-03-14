@@ -4,6 +4,20 @@ import { Link, useLocation } from "react-router-dom";
 import "./header.css";
 import { tokenExists, isAdmin, tokenPayload } from "../../controller/jwtToken";
 
+/**
+ * Header component that displays a navigation bar with links based on the user's authentication status and role.
+ *
+ * @example
+ * // Usage example:
+ * // <Header />
+ *
+ * @returns {JSX.Element} The rendered header component.
+ *
+ * @remarks
+ * This component uses React Router's `useLocation` hook to update the navigation bar items
+ * whenever the location changes. It also checks for the presence of a token to determine
+ * if the user is logged in and if the user is an admin.
+ */
 export default function Header() {
   const location = useLocation();
   const [isLoggedIn, setIsLoggedIn] = useState(tokenExists());
