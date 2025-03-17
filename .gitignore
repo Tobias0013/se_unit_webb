@@ -8,6 +8,10 @@
 /dist/
 /dist-server/
 
+# Ignore documentation files
+/doc/
+/docs/
+
 # Ignore dependency directories
 /node_modules/
 /vendor/

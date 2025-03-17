@@ -9,6 +9,20 @@ import {
   validPassowrd,
 } from "../../controller/passwordChecker";
 
+/**
+ * RegisterPage component allows users to register by providing a username, password, and an optional admin status.
+ * It includes form validation and password strength checking.
+ *
+ * @example
+ * return (
+ *   <RegisterPage />
+ * )
+ *
+ * @returns {JSX.Element} The rendered component.
+ * 
+ * @throws {Error} If login fails, an error message is set.
+ */
+
 export default function RegisterPage() {
   const navigate = useNavigate();
   const [username, setUsername] = useState<string>("");

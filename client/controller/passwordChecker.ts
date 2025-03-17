@@ -1,5 +1,14 @@
 import { passwordStrength } from "check-password-strength";
 
+/**
+ * An array of password strength options, each with specific criteria.
+ * 
+ * Each option includes:
+ * - `id`: A unique identifier for the password strength level.
+ * - `value`: A string representing the description of the password strength.
+ * - `minDiversity`: The minimum number of character types (e.g., lowercase, uppercase, digits, symbols) required.
+ * - `minLength`: The minimum length required for the password.
+ */
 const passwordOptions = [
   {
     id: 0,
