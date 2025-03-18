@@ -13,20 +13,37 @@ import {
 
 import DeviceList from '../../component/DeviceList';
 
+/**
+ * DevicesPage displays smart devices grouped by room and allows controlling them.
+ *
+ * @returns {JSX.Element} Rendered devices page.
+ *
+ * @remarks
+ * This page fetches device data from backend and provides toggle and fan speed control.
+ */
 const DevicesPage: React.FC = () => {
   // Optional User State (currently unused/commented)
   // const [user, setUser] = useState<IUser | null>(null);
 
-  // Devices state
+  // STATE FOR REAL DEVICES DATA
   const [devices, setDevices] = useState<IDevice[] | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+
+  // MOCK DEVICES FOR PLACEHOLDER
+  const mockDevices: IDevice[] = [
+    { id: "mock-1", name: "Living Room Lamp", type: "lamp", status: false, room: "Living Room" },
+    { id: "mock-2", name: "Living Room Fan", type: "fan", status: true, value: 2, room: "Living Room" },
+    { id: "mock-3", name: "Bedroom Lamp", type: "lamp", status: true, room: "Bedroom" },
+    { id: "mock-4", name: "Kitchen Sensor", type: "sensor", value: 23, room: "Kitchen" },
+    { id: "mock-5", name: "Bathroom Sensor", type: "sensor", value: 20, room: "Bathroom" },
+  ];
 
   // Date/time state
   const [timeString, setTimeString] = useState<string>('');
   const [dateString, setDateString] = useState<string>('');
 
-  // Update date/time every minute
+  // Updating date/time every minute
   useEffect(() => {
     const updateDateTime = () => {
       const now = new Date();
@@ -41,16 +58,16 @@ const DevicesPage: React.FC = () => {
         })
       );
     };
-    updateDateTime(); // initial call
+    updateDateTime();
     const intervalId = setInterval(updateDateTime, 60_000);
     return () => clearInterval(intervalId);
   }, []);
 
-  // Fetch devices on component mount
+  // Fetching devices on mount
   useEffect(() => {
     const loadDevices = async () => {
       try {
-        // Optional user fetch
+        // User fetch ???
         // const [userData, deviceData] = await Promise.all([
         //   fetchCurrentUser(),
         //   fetchDevices(),
@@ -58,9 +75,15 @@ const DevicesPage: React.FC = () => {
         // setUser(userData);
 
         const deviceData = await fetchDevices();
-        setDevices(deviceData);
+        if (deviceData.length > 0) {
+          setDevices(deviceData); // REAL DEVICES
+        } else {
+          console.warn('No real devices, using mock data');
+          setDevices(mockDevices); // MOCK DEVICES
+        }
       } catch (err: any) {
-        setError(err.message || 'Failed to load data.');
+        setDevices(mockDevices); // MOCK DEVICES FALLBACK
+        setError('Using mock devices – real devices unavailable.');
       } finally {
         setLoading(false);
       }
@@ -68,10 +91,12 @@ const DevicesPage: React.FC = () => {
     loadDevices();
   }, []);
 
-  // Handle toggling device status (on/off)
+  // Toggle device handler (working for both REAL & MOCK)
   const handleToggle = async (device: IDevice) => {
     try {
-      await toggleDevice(device.id, !device.status);
+      if (!device.id.startsWith('mock')) {
+        await toggleDevice(device.id, !device.status);
+      }
       setDevices((prev) =>
         prev
           ? prev.map((d) =>
@@ -84,10 +109,12 @@ const DevicesPage: React.FC = () => {
     }
   };
 
-  // Handle setting fan speed
+  // Fan speed handler (working for both REAL & MOCK)
   const handleSetFanSpeed = async (device: IDevice, speed: number) => {
     try {
-      await updateFanSpeed(device.id, speed);
+      if (!device.id.startsWith('mock')) {
+        await updateFanSpeed(device.id, speed);
+      }
       setDevices((prev) =>
         prev
           ? prev.map((d) =>
@@ -100,7 +127,27 @@ const DevicesPage: React.FC = () => {
     }
   };
 
-  // Loading state display
+  // QUICK ACCESS BUTTONS
+  const handleQuickAccess = (scene: string) => {
+    setDevices((prev) =>
+      prev
+        ? prev.map((device) => {
+            if (device.type === "lamp") {
+              return { ...device, status: scene === "Wake Up" || scene === "Party" };
+            }
+            if (device.type === "fan") {
+              return {
+                ...device,
+                status: scene !== "Good Night",
+                value: scene === "Chill" ? 2 : scene === "Party" ? 5 : 1,
+              };
+            }
+            return device;
+          })
+        : []
+    );
+  };
+
   if (loading) {
     return (
       <div className="devices-page">
@@ -109,7 +156,6 @@ const DevicesPage: React.FC = () => {
     );
   }
 
-  // Error state display
   if (error) {
     return (
       <div className="devices-page error">
@@ -118,43 +164,38 @@ const DevicesPage: React.FC = () => {
     );
   }
 
-  // Group devices by room/location
   const rooms = devices
     ? Array.from(new Set(devices.map((d) => d.room || 'Other')))
     : [];
 
-  // Optional user initials for avatar (currently unused)
-  // const userInitials = user
-  //   ? (user.firstName[0] + (user.lastName[0] || '')).toUpperCase()
-  //   : 'U';
-
   return (
     <div className="devices-page">
-      {/* Top bar with date/time, user avatar, settings */}
+      {/* Header */}
       <header className="top-bar">
         <div className="time-date">
           <span className="time">{timeString}</span>
           <span className="date">{dateString}</span>
         </div>
         <div className="user-profile">
-          <div className="user-avatar">U</div> {/* Replace with {userInitials} if implemented */}
+          <div className="user-avatar">U</div>
           <span className="user-name">User</span>
         </div>
         <button className="settings-btn">Settings</button>
       </header>
 
-      {/* Greeting & Quick Access Scenes (can later integrate with backend scenes/actions) */}
+      {/* Greeting and quick access buttons */}
       <section className="greeting-section">
         <h1>Good morning!</h1>
         <div className="quick-access">
-          <button>Wake Up</button>
-          <button>Chill</button>
-          <button>Party</button>
-          <button>Good Night</button>
+          {['Wake Up', 'Chill', 'Party', 'Good Night'].map((scene) => (
+            <button key={scene} onClick={() => handleQuickAccess(scene)}>
+              {scene}
+            </button>
+          ))}
         </div>
       </section>
 
-      {/* Rooms & Devices */}
+      {/* Rooms and devices */}
       <section className="rooms-section">
         <h2>Rooms</h2>
         {rooms.map((room) => {

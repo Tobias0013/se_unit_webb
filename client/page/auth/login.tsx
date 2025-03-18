@@ -17,8 +17,8 @@ import { setToken } from "../../controller/jwtToken";
  *
  * @example
  * ```
- * retrun (
- *   return <LoginPage />;
+ * return (
+ *   <LoginPage />
  * )
  * ```
  *
@@ -39,7 +39,8 @@ export default function LoginPage() {
     try {
       const resp = await login(username, password);
       setToken(resp.data.token);
-      navigate("/dashboard"); //TODO: check if correct path
+      // Redirecting to /devices after login to directly access devices page
+      navigate("/devices");
     } catch (error) {
       const message = handleAPIError(error, "Login page");
       setErrorMessage(message);
