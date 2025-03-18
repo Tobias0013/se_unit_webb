@@ -4,7 +4,7 @@ import './style.css';
 import {
   fetchDevices,
   toggleDevice,
-  setFanSpeed,
+  updateFanSpeed,
   IDevice,
 } from '../../controller/deviceController';
 
@@ -14,14 +14,15 @@ import {
 import DeviceList from '../../component/DeviceList';
 
 const DevicesPage: React.FC = () => {
-  // For user data (optional??)
+  // Optional User State (currently unused/commented)
   // const [user, setUser] = useState<IUser | null>(null);
 
+  // Devices state
   const [devices, setDevices] = useState<IDevice[] | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
-  // For date/time display
+  // Date/time state
   const [timeString, setTimeString] = useState<string>('');
   const [dateString, setDateString] = useState<string>('');
 
@@ -40,21 +41,22 @@ const DevicesPage: React.FC = () => {
         })
       );
     };
-    updateDateTime(); // initial
+    updateDateTime(); // initial call
     const intervalId = setInterval(updateDateTime, 60_000);
     return () => clearInterval(intervalId);
   }, []);
 
-  // Fetch data on mount
+  // Fetch devices on component mount
   useEffect(() => {
-    const loadData = async () => {
+    const loadDevices = async () => {
       try {
-        // If we have user data???
+        // Optional user fetch
         // const [userData, deviceData] = await Promise.all([
         //   fetchCurrentUser(),
         //   fetchDevices(),
         // ]);
         // setUser(userData);
+
         const deviceData = await fetchDevices();
         setDevices(deviceData);
       } catch (err: any) {
@@ -63,17 +65,17 @@ const DevicesPage: React.FC = () => {
         setLoading(false);
       }
     };
-    loadData();
+    loadDevices();
   }, []);
 
-  // Toggling device on/off
+  // Handle toggling device status (on/off)
   const handleToggle = async (device: IDevice) => {
     try {
-      await toggleDevice(device.id, !device.isOn);
+      await toggleDevice(device.id, !device.status);
       setDevices((prev) =>
         prev
           ? prev.map((d) =>
-              d.id === device.id ? { ...d, isOn: !d.isOn } : d
+              d.id === device.id ? { ...d, status: !d.status } : d
             )
           : null
       );
@@ -82,10 +84,10 @@ const DevicesPage: React.FC = () => {
     }
   };
 
-  // Setting fan speed
+  // Handle setting fan speed
   const handleSetFanSpeed = async (device: IDevice, speed: number) => {
     try {
-      await setFanSpeed(device.id, speed);
+      await updateFanSpeed(device.id, speed);
       setDevices((prev) =>
         prev
           ? prev.map((d) =>
@@ -98,6 +100,7 @@ const DevicesPage: React.FC = () => {
     }
   };
 
+  // Loading state display
   if (loading) {
     return (
       <div className="devices-page">
@@ -106,6 +109,7 @@ const DevicesPage: React.FC = () => {
     );
   }
 
+  // Error state display
   if (error) {
     return (
       <div className="devices-page error">
@@ -114,32 +118,32 @@ const DevicesPage: React.FC = () => {
     );
   }
 
-  // Group devices by room (if we have enough data for that)
+  // Group devices by room/location
   const rooms = devices
     ? Array.from(new Set(devices.map((d) => d.room || 'Other')))
     : [];
 
-  // For user initials, NEEDED???:
+  // Optional user initials for avatar (currently unused)
   // const userInitials = user
   //   ? (user.firstName[0] + (user.lastName[0] || '')).toUpperCase()
   //   : 'U';
 
   return (
     <div className="devices-page">
-      {/* Top bar with date/time, user avatar, whatever */}
+      {/* Top bar with date/time, user avatar, settings */}
       <header className="top-bar">
         <div className="time-date">
           <span className="time">{timeString}</span>
           <span className="date">{dateString}</span>
         </div>
         <div className="user-profile">
-          <div className="user-avatar">U</div> {/* or {userInitials} */}
+          <div className="user-avatar">U</div> {/* Replace with {userInitials} if implemented */}
           <span className="user-name">User</span>
         </div>
         <button className="settings-btn">Settings</button>
       </header>
 
-      {/* Greeting & Quick Access Scenes */}
+      {/* Greeting & Quick Access Scenes (can later integrate with backend scenes/actions) */}
       <section className="greeting-section">
         <h1>Good morning!</h1>
         <div className="quick-access">
@@ -150,7 +154,7 @@ const DevicesPage: React.FC = () => {
         </div>
       </section>
 
-      {/* Rooms & Device Lists */}
+      {/* Rooms & Devices */}
       <section className="rooms-section">
         <h2>Rooms</h2>
         {rooms.map((room) => {

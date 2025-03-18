@@ -5,14 +5,11 @@ import "./style.css";
 import HomePage from "./page/home"; // WILL WE HAVE HOME PAGE OR..?
 import LoginPage from "./page/auth/login";
 import RegisterPage from "./page/auth/register";
-<<<<<<< HEAD
 import DevicesPage from "./page/devices/index"; // Oona's, don't touch
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-=======
 import Header from "./component/header/header";
 import LogOut from "./page/auth/logOut";
->>>>>>> origin/main
 
 const rootElem = document.getElementById("root");
 if (!rootElem) {

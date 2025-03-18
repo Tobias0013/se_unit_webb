@@ -1,0 +1,23 @@
+.room-card {
+    background-color: #fff;
+    border-radius: 16px;
+    padding: 12px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+  }
+  
+  .room-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+  
+  .room-icon {
+    font-size: 18px;
+  }
+  
+  .room-name {
+    font-size: 16px;
+    font-weight: 600;
+  }
+  

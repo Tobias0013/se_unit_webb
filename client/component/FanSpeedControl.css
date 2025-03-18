@@ -1,0 +1,17 @@
+.fan-speed-control {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .fan-speed-control input[type="range"] {
+    flex: 1;
+  }
+  
+  .speed-value {
+    width: 20px;
+    text-align: center;
+    font-weight: bold;
+    color: #567aed;
+  }
+  

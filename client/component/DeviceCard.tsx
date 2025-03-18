@@ -5,7 +5,7 @@ import { IDevice } from '../controller/deviceController';
 interface DeviceCardProps {
   device: IDevice | null;  // Allow null to handle potential missing data
   onToggle: (device: IDevice) => Promise<void>;
-  onUpdateFanSpeed: (device: IDevice, speed: number) => Promise<void>;
+  onSetFanSpeed: (device: IDevice, speed: number) => Promise<void>;
 }
 
 /**

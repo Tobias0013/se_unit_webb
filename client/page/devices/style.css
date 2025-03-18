@@ -1,0 +1,110 @@
+body {
+    background-color: #eaf4fe;
+    font-family: 'Roboto', 'Open Sans', sans-serif;
+    color: #333;
+  }
+  
+  .devices-page {
+    padding: 16px;
+  }
+  
+  .top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+  }
+  
+  .time-date {
+    font-size: 14px;
+    color: #555;
+  }
+  
+  .user-profile {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .user-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: #567aed;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+  }
+  
+  .settings-btn {
+    background-color: transparent;
+    border: none;
+    color: #567aed;
+    cursor: pointer;
+  }
+  
+  .greeting-section {
+    background-color: white;
+    border-radius: 20px;
+    padding: 16px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    margin-bottom: 20px;
+  }
+  
+  .greeting-section h1 {
+    margin-bottom: 12px;
+  }
+  
+  .quick-access {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+  }
+  
+  .quick-access button {
+    flex: none;
+    padding: 8px 16px;
+    border-radius: 20px;
+    background-color: #f5f5f5;
+    border: none;
+    color: #555;
+    cursor: pointer;
+    font-weight: 500;
+  }
+  
+  .rooms-section {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  
+  .room {
+    background-color: white;
+    border-radius: 16px;
+    padding: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  }
+  
+  .room-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+  
+  .room-icon {
+    font-size: 18px;
+  }
+  
+  .room-name {
+    font-weight: 600;
+    font-size: 16px;
+  }
+  
+  .loading, .error {
+    color: #e57373;
+    text-align: center;
+  }  
+  
