@@ -82,7 +82,7 @@ const MainPage = () => {
           <a href="#">User</a>
           <a href="#">Notifications</a>
           <a href="#">Settings</a>
-          <a href="#" onClick={handleLogout}>Logout</a>
+          <Link to="/logout">Logout</Link>
         </nav>
       </aside>
 
