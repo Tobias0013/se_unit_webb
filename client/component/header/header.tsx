@@ -22,6 +22,7 @@ export default function Header() {
   const location = useLocation();
   const [isLoggedIn, setIsLoggedIn] = useState(tokenExists());
   const [isAdminUser, setIsAdminUser] = useState(isAdmin());
+  const [showNavBar, setShowNavBar] = useState(false);
 
   let navBarItems = [
     { text: "Home", link: "/form-list" },
@@ -39,12 +40,22 @@ export default function Header() {
   return (
     <header>
       <Link to={"/"}>
-        <div className="header-logo">
-          <p>{"SmartHouse"}</p>
-        </div>
+      <div className="header-logo">
+        <p>{"SmartHouse"}</p>
+      </div>
       </Link>
 
-      <div className={"header-nav"}>
+      <div className="header-nav-icon" onClick={() => setShowNavBar(!showNavBar)}>
+      <span className="material-icons">{showNavBar ? "menu_open" : "menu" }</span>
+      </div>
+
+      <div className={"header-nav"} style={
+            showNavBar
+              ? isLoggedIn
+                ? { height: "36rem" }
+                : { height: `${navBarItems.length * 4.3 + 1.5}rem` }
+              : {}
+                }>
         <ul className="header-navbar">
           {navBarItems.map((item) => {
             return (
