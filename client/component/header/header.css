@@ -34,6 +34,10 @@ header a {
 
 /* Navigation */
 
+.header-nav-icon{
+    visibility: hidden;
+}
+
 .header-nav {
     margin-left: auto;
 }
@@ -62,48 +66,84 @@ header a {
 }
 
 /* Mobile Styling */
-@media (max-width: 768px) {
+@media only screen and (orientation: portrait) {
     header {
-        flex-direction: column;
-        align-items: flex-start;
-        padding: 1rem;
-    }
-
-    .header-logo {
-        margin-left: 0;
+        border-bottom: #acc4b5 solid 0px;
         margin-bottom: 1rem;
     }
 
-    .header-logo > p {
-        font-size: 3rem;
-        line-height: 3.2rem;
+    html, body {
+        overflow-x: hidden;
+    }
+    body {
+        position: relative
     }
 
-    .header-nav {
+    header{
+        flex-direction: column;
+        height: fit-content;
+    }
+    
+    /* Header Logo */
+    
+    .header-logo {
+        margin: 0;
+        
+    }
+    
+    /* Navigation */
+
+    .header-nav-icon{
+        visibility: visible;
+        position: absolute;
+        right: 0;
+        top: 0;
+        margin: 0.5rem 1rem 0 0;
+    }
+
+    .header-nav-icon > span{
+        font-size: 4.5rem;
+    }
+    
+    .header-navbar{
+        gap: 0;
+        flex-direction: column;
+        margin: 1rem 0 0 0;
         width: 100%;
     }
 
-    .header-navbar {
-        flex-direction: column;
-        align-items: flex-start;
-        margin-right: 0;
-        padding: 0;
+    .header-navbar.second {
+        border-top: none;
+        margin-top: 0;
+        padding-top: 0;
+    }
+
+    .header-nav{
+        overflow: hidden;
+        transition: all 400ms;
+        height: 0rem;
+        width: 100%;
+    }
+
+    .header-nav.open{
+        height: 27rem;
     }
 
     .header-navbar > li {
         width: 100%;
+        height: fit-content;
+    }
+    
+    .header-navbar:not(:last-of-type) > li:first-of-type{
+        border-top: rgb(0, 0, 0, 70%) 2px solid;    
     }
 
-    .header-navbar > li > a {
-        display: block;
+    .header-navbar > li {
+        border-bottom: rgb(0, 0, 0, 70%) 2px solid;
+        text-align: center;
         width: 100%;
-        padding: 1rem;
-        font-size: 1.6rem;
-        text-align: left;
-    }
+        padding: 1rem 0;
 
-    .header-navbar > li :hover {
-        background-color: rgb(237, 237, 237);
-        border-radius: 0;
+        display: block;
     }
 }
