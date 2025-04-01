@@ -60,3 +60,50 @@ header a {
     background-color: rgb(237, 237, 237);
     border-radius: 9px;
 }
+
+/* Mobile Styling */
+@media (max-width: 768px) {
+    header {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 1rem;
+    }
+
+    .header-logo {
+        margin-left: 0;
+        margin-bottom: 1rem;
+    }
+
+    .header-logo > p {
+        font-size: 3rem;
+        line-height: 3.2rem;
+    }
+
+    .header-nav {
+        width: 100%;
+    }
+
+    .header-navbar {
+        flex-direction: column;
+        align-items: flex-start;
+        margin-right: 0;
+        padding: 0;
+    }
+
+    .header-navbar > li {
+        width: 100%;
+    }
+
+    .header-navbar > li > a {
+        display: block;
+        width: 100%;
+        padding: 1rem;
+        font-size: 1.6rem;
+        text-align: left;
+    }
+
+    .header-navbar > li :hover {
+        background-color: rgb(237, 237, 237);
+        border-radius: 0;
+    }
+}
