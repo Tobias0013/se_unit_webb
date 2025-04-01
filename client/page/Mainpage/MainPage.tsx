@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./MainPage.css";
+import { Link } from "react-router-dom";
 
 const devicesData = [
   { id: 1, name: "Smart TV", type: "tv", status: "on" },
@@ -53,7 +54,7 @@ const MainPage = () => {
           <a href="#">User</a>
           <a href="#">Notifications</a>
           <a href="#">Settings</a>
-          <a href="#">Logout</a>
+          <Link to="/logout">Logout</Link>
         </nav>
       </aside>
 

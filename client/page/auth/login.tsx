@@ -39,7 +39,7 @@ export default function LoginPage() {
     try {
       const resp = await login(username, password);
       setToken(resp.data.token);
-      navigate("/dashboard"); //TODO: check if correct path
+      navigate("/main"); //TODO: check if correct path
     } catch (error) {
       const message = handleAPIError(error, "Login page");
       setErrorMessage(message);
