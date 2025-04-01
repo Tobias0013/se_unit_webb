@@ -4,7 +4,26 @@ import { useNavigate } from "react-router-dom";
 import "./auth.css";
 import { login } from "../../controller/API/auth";
 import { handleAPIError } from "../../controller/API/connection";
+import { setToken } from "../../controller/jwtToken";
 
+/**
+ * LoginPage component renders a login form for user authentication.
+ *
+ * @returns {JSX.Element} The rendered login page component.
+ *
+ * @remarks
+ * This component uses React hooks for state management and navigation.
+ * It handles form submission, validates input fields, and displays error messages.
+ *
+ * @example
+ * ```
+ * retrun (
+ *   return <LoginPage />;
+ * )
+ * ```
+ *
+ * @throws {Error} If login fails, an error message is set.
+ */
 export default function LoginPage() {
   const navigate = useNavigate();
   const [username, setUsername] = useState<string>("");
@@ -19,12 +38,12 @@ export default function LoginPage() {
     }
     try {
       const resp = await login(username, password);
-      sessionStorage.setItem("token", resp.data.token);
+      setToken(resp.data.token);
+      navigate("/dashboard"); //TODO: check if correct path
     } catch (error) {
       const message = handleAPIError(error, "Login page");
       setErrorMessage(message);
     }
-    navigate("/dashboard"); //TODO: check if correct path
   };
 
   return (
