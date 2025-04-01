@@ -41,7 +41,7 @@ export default function Header() {
     <header>
       <Link to={"/"}>
         <div className="header-logo">
-          <p>{"<LOGO>"}</p>
+          <p>{"SmartHouse"}</p>
         </div>
       </Link>
 
