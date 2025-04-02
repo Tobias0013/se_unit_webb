@@ -51,12 +51,10 @@ export default function Header() {
 
       <div className={"header-nav"} style={
             showNavBar
-              ? isLoggedIn
-                ? { height: "36rem" }
-                : { height: `${navBarItems.length * 4.3 + 1.5}rem` }
+              ? { height: `${navBarItems.length * 4.3 + 1.5}rem` }
               : {}
                 }>
-        <ul className="header-navbar">
+        <ul className="header-navbar" onClick={() => setShowNavBar(false)}>
           {navBarItems.map((item) => {
             return (
               <li key={item.text}>
