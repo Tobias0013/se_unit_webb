@@ -1,14 +1,15 @@
-
 body {
-    font-family: 'Arial', sans-serif;
-    background-color: #f8f9fa;
+    font-family: "Arial", sans-serif;
+    background-color: #f0f5ff;
     margin: 0;
     padding: 0;
-    display: flex;
-  }
+}
   
+.dashboard {
+    display: flex;
+}
  
-  .sidebar {
+.sidebar {
     width: 250px;
     background: white;
     padding: 20px;
@@ -18,161 +19,174 @@ body {
     left: 0;
     top: 0;
     bottom: 0;
-  }
+}
   
-  .logo {
+.logo {
     font-size: 24px;
     color: #3498db;
     font-weight: bold;
     text-align: center;
-  }
+}
   
-  .sidebar nav {
+.sidebar nav {
     display: flex;
     flex-direction: column;
     margin-top: 20px;
-  }
+}
   
-  .sidebar nav a {
+.sidebar nav a {
     text-decoration: none;
     color: #2c3e50;
     padding: 10px;
     margin-bottom: 5px;
     border-radius: 5px;
     display: block;
-  }
+}
   
-  .sidebar nav a.active, .sidebar nav a:hover {
+.sidebar nav a.active, .sidebar nav a:hover {
     background: #3498db;
     color: white;
-  }
+}
   
-  /* Main Content */
-  .main-content {
+.main-content {
     flex: 1;
-    padding: 40px;
-    margin-left: 290px; 
-    max-width: 1300px;  
-  }
+    padding: 0 8rem;
+    margin-left: 250px;
+    width: calc(100% - 250px);
+}
   
  
-  .dashboard-header {
+.dashboard-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     background: white;
-    padding: 20px;
+    padding: 20px 30px;
     border-radius: 10px;
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px;
-    width: 100%; 
-    min-height: 100px; 
-    flex-grow: 1; 
-  }
-  
-  .dashboard-header h1 {
-    font-size: 22px;
-    font-weight: bold;
-    color: #2c3e50;
-  }
-  
-  .user-info {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  
-  .user-info img {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-  }
-  .header-left {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    flex-grow: 1;
-  }
-  
-  .header-left h1 {
-    margin: 0;
-    font-size: 22px;
-    color: #2c3e50;
-    flex-grow: 1;
-  }
-  
-  .header-left span {
-    font-size: 14px;
-    color: #7f8c8d;
-  }
-  .user-avatar {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-  }
-  
- 
-  @media (max-width: 768px) {
-    .dashboard-header {
-      flex-direction: column;
-      text-align: center;
-      padding: 15px;
-      min-height: auto;
-    }
-  
-    .user-info {
-      margin-top: 10px;
-    }
+    margin-bottom: 30px;
 }
   
   
-  .info-widgets {
-    display: flex;
-    gap: 20px;
-    justify-content: center; 
-  }
-  
-  .widget {
-    flex: 1;
-    background: white;
-    padding: 30px;
-    border-radius: 8px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    font-size: 18px;
-  }
-  
-  .widget h3 {
-    margin-bottom: 5px;
-    font-size: 18px;
+.dashboard-header h1 {
+    font-size: 22px;
+    font-weight: bold;
     color: #2c3e50;
-  }
+}
+  
+.user-info {
+    display: flex;
+    align-items: center;
+}
+  
+.user-info img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+.header-left {
+    display: flex;
+    flex-direction: column;
+}
+  
+.header-left h1 {
+    margin: 0;
+    font-size: 24px;
+    color: #2c3e50;
+}
+  
+.header-left span {
+    font-size: 14px;
+    color: #7f8c8d;
+    margin-top: 5px;
+}
+
+.user-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid #3498db;
+}
+  
+ 
+
   
 
-
   
+.info-widgets {
+    display: flex;
+    gap: 30px;
+    margin-bottom: 30px;
+}
   
-  .devices {
-    margin-top: 20px;
-  }
-  
-  .device-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 20px;
-    justify-content: center;
-  }
-  
-  .device {
+.widget {
+    flex: 1;
     background: white;
     padding: 25px;
     border-radius: 10px;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
     text-align: center;
+}
+  
+.widget h3 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 18px;
+    color: #2c3e50;
+}
+
+.widget p {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 0;
+    color: #3498db;
+}
+
+  .devices {
+    margin-top: 30px;
+  }
+  
+  .device-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+  
+  .device {
+    background: white;
+    padding: 20px 25px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 100%;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .device::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 5px;
+  }
+  
+  .device.on::before {
+    background-color: #2ecc71;
+    left: 0;
+  }
+  
+  .device.off::before,
+  .device.fan::before {
+    background-color: #e74c3c;
+    left: 0;
+  }
+  
+  .device.humidifier::before {
+    background-color: #2ecc71;
+    left: 0;
   }
   
   .device-name {
@@ -181,26 +195,29 @@ body {
     color: #2c3e50;
   }
   
-  .device.on {
-    border-left: 5px solid #2ecc71;
-  }
-  
-  .device.off {
-    border-left: 5px solid #e74c3c;
-  }
-  
   .toggle {
     background: #3498db;
     color: white;
     border: none;
-    padding: 10px 14px;
+    padding: 8px 16px;
     border-radius: 5px;
     cursor: pointer;
     font-weight: bold;
+    transition: background 0.2s ease;
   }
   
   .toggle:hover {
     background: #2980b9;
+  }
+  
+  /* Error message */
+  .error {
+    background-color: #ffebee;
+    color: #e53935;
+    padding: 10px 15px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    border-left: 4px solid #e53935;
   }
 
   
@@ -220,4 +237,33 @@ body {
     margin: auto;
   }
   
+  /* @media (max-width: 768px) {
+    .dashboard-header {
+      flex-direction: column;
+      text-align: center;
+      padding: 15px;
+      min-height: auto;
+    }
   
+    .user-info {
+      margin-top: 10px;
+    }
+} */
+  /* Responsive adjustments */
+@media (max-width: 1200px) {
+    .device-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  
+  @media (max-width: 992px) {
+    /* .main-content {
+      margin-left: 0;
+      padding: 20px;
+    } */
+  
+    .info-widgets {
+      flex-direction: column;
+      gap: 20px;
+    }
+  }
