@@ -29,8 +29,7 @@ const getAuthHeaders = () => {
 };
 
 /** 
- * GET /devices. Fetching all devices from backend 
- * Requires valid Bearer token.
+ * GET /devices - Fetching all devices from backend 
  */
 export async function fetchDevices(): Promise<IDevice[]> {
   console.log("Calling /devices with token:", sessionStorage.getItem("token"));
@@ -44,13 +43,12 @@ export async function fetchDevices(): Promise<IDevice[]> {
 }
 
 /** 
- * POST /devices/{device_id}/toggle. 
- * Toggling device's on/off state (lamp / fan)
+ * PATCH /devices/{device_id}/toggle - Toggle lamp status
  */
 export async function toggleDevice(deviceId: string, newState: boolean): Promise<void> {
   try {
     const status = newState ? "on" : "off";
-    await axios.post(`${API_BASE}/devices/${deviceId}/toggle`, { status }, getAuthHeaders());
+    await axios.patch(`${API_BASE}/devices/${deviceId}/toggle`, { status }, getAuthHeaders());
   } catch (error: any) {
     console.error("Error toggling device:", error);
     throw new Error(
@@ -60,8 +58,7 @@ export async function toggleDevice(deviceId: string, newState: boolean): Promise
 }
 
 /** 
- * PUT /devices/{device_id}. 
- * Setting fan speed 
+ * PUT /devices/{device_id} - Update fan speed 
  */
 export async function updateFanSpeed(deviceId: string, speed: number): Promise<void> {
   try {

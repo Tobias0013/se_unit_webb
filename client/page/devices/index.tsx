@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './style.css';
+import { toast } from "react-toastify";
 
 import {
   fetchDevices,
@@ -67,22 +68,20 @@ const DevicesPage: React.FC = () => {
   useEffect(() => {
     const loadDevices = async () => {
       try {
-        // User fetch ???
-        // const [userData, deviceData] = await Promise.all([
-        //   fetchCurrentUser(),
-        //   fetchDevices(),
-        // ]);
-        // setUser(userData);
-
         const deviceData = await fetchDevices();
-        if (deviceData.length > 0) {
-          setDevices(deviceData); // REAL DEVICES
-        } else {
-          console.warn('No real devices, using mock data');
-          setDevices(mockDevices); // MOCK DEVICES
-        }
-      } catch (err: any) {
-        setDevices(mockDevices); // MOCK DEVICES FALLBACK
+        const normalizedData = deviceData.map(d => ({
+          id: d.device_id,
+          name: d.device_name,
+          type: d.device_type,
+          room: d.location || 'Other',
+          status: d.status === "on",
+          value: d.value ?? 0
+        }));
+
+        setDevices(normalizedData.length > 0 ? normalizedData : mockDevices);
+      } catch (err: unknown) {
+        console.warn("Backend unreachable or failed. Falling back to mock devices.");
+        setDevices(mockDevices);
         setError('Using mock devices – real devices unavailable.');
       } finally {
         setLoading(false);
@@ -91,10 +90,11 @@ const DevicesPage: React.FC = () => {
     loadDevices();
   }, []);
 
-  // Toggle device handler (working for both REAL & MOCK)
+  // Toggle device handler (ONLY lamps will connect to backend)
   const handleToggle = async (device: IDevice) => {
     try {
-      if (!device.id.startsWith('mock')) {
+      const isMock = typeof device.id === 'string' && device.id.startsWith('mock');
+      if (!isMock && device.type === 'lamp') {
         await toggleDevice(device.id, !device.status);
       }
       setDevices((prev) =>
@@ -109,10 +109,11 @@ const DevicesPage: React.FC = () => {
     }
   };
 
-  // Fan speed handler (working for both REAL & MOCK)
+  // Fan speed handler (stays mock-only)
   const handleSetFanSpeed = async (device: IDevice, speed: number) => {
     try {
-      if (!device.id.startsWith('mock')) {
+      const isMock = typeof device.id === 'string' && device.id.startsWith('mock');
+      if (!isMock) {
         await updateFanSpeed(device.id, speed);
       }
       setDevices((prev) =>
@@ -127,25 +128,28 @@ const DevicesPage: React.FC = () => {
     }
   };
 
-  // QUICK ACCESS BUTTONS
+  // QUICK ACCESS BUTTONS (MOOD BUTTONS) will now affect ONLY mock devices
   const handleQuickAccess = (scene: string) => {
     setDevices((prev) =>
       prev
         ? prev.map((device) => {
+            const isMock = typeof device.id === 'string' && device.id.startsWith('mock');
+            if (!isMock) return device; // do nothing on real devices
+
             if (device.type === "lamp") {
-              return { ...device, status: scene === "Wake Up" || scene === "Party" };
+              const newStatus = scene === "Wake Up" || scene === "Party";
+              return { ...device, status: newStatus };
             }
             if (device.type === "fan") {
-              return {
-                ...device,
-                status: scene !== "Good Night",
-                value: scene === "Chill" ? 2 : scene === "Party" ? 5 : 1,
-              };
+              const newSpeed = scene === "Chill" ? 2 : scene === "Party" ? 5 : 1;
+              const newStatus = scene !== "Good Night";
+              return { ...device, status: newStatus, value: newSpeed };
             }
             return device;
           })
         : []
     );
+    toast.success("Mood applied to mock devices!");
   };
 
   if (loading) {

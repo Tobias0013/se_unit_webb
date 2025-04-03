@@ -3,17 +3,13 @@ import { toast } from "react-toastify";
 import { IDevice } from '../controller/deviceController';
 
 interface DeviceCardProps {
-  device: IDevice | null;  // Allow null to handle potential missing data
+  device: IDevice | null;
   onToggle: (device: IDevice) => Promise<void>;
   onSetFanSpeed: (device: IDevice, speed: number) => Promise<void>;
 }
 
-/**
- * Renders single device card with controls depending on device type (lamp, fan, sensor).
- * Some fallback logic if device data is missing / invalid.
- */
-const DeviceCard: React.FC<DeviceCardProps> = ({ device, onToggle, onUpdateFanSpeed }) => {
-  // Safeguard: if device is null or missing critical fields, show fallback
+// Rendering device card
+const DeviceCard: React.FC<DeviceCardProps> = ({ device, onToggle, onSetFanSpeed }) => {
   if (!device) {
     return (
       <div className="device-card error">
@@ -24,50 +20,52 @@ const DeviceCard: React.FC<DeviceCardProps> = ({ device, onToggle, onUpdateFanSp
 
   const { id, name, type, status, value } = device;
 
-  // Handler for toggling device on/off
+  const typeLabel = type === 'lamp' ? '💡 Lamp' :
+    type === 'fan' ? '🌀 Fan' :
+    type === 'sensor' ? '🌡 Sensor' :
+    type;
+
   const handleToggleClick = useCallback(async () => {
     try {
-      // Only toggling for lamp/fan
       if (type === 'lamp' || type === 'fan') {
         await onToggle(device);
       }
     } catch (err) {
       console.error('Error toggling device:', err);
-      // Could display a toast or error message if needed
       toast.error("Failed to toggle device");
     }
   }, [device, onToggle, type]);
 
-  // Handler for fan speed slider
   const handleFanSpeedChange = useCallback(
     async (e: React.ChangeEvent<HTMLInputElement>) => {
       try {
         const speed = parseInt(e.target.value, 10);
         if (type === 'fan') {
-          await onUpdateFanSpeed(device, speed);
+          await onSetFanSpeed(device, speed);
         }
       } catch (err) {
         console.error('Error setting fan speed:', err);
-        // Could display a toast or error message if needed
         toast.error("Failed to set fan speed");
       }
     },
-    [device, onUpdateFanSpeed, type]
+    [device, onSetFanSpeed, type]
   );
 
   return (
     <div className="device-card">
-      <h3 className="device-name">{name || 'Unknown Device'}</h3>
-      <p className="device-type">{type || 'Unknown Type'}</p>
+      <h3 className="device-name">
+        {name?.replace(new RegExp(`\\b${type}\\b`, 'i'), '').trim() || 'Unknown Device'}
+      </h3>
+      <p className="device-type">{typeLabel}</p>
 
-      {/* Toggle for lamp/fan */}
+      {/* Toggle */}
       {(type === 'lamp' || type === 'fan') && (
         <button className="toggle-btn" onClick={handleToggleClick}>
           {status ? 'Turn Off' : 'Turn On'}
         </button>
       )}
 
-      {/* Fan speed slider */}
+      {/* Fan speed */}
       {type === 'fan' && (
         <div className="fan-control">
           <label>Fan Speed:</label>
@@ -77,16 +75,15 @@ const DeviceCard: React.FC<DeviceCardProps> = ({ device, onToggle, onUpdateFanSp
             max="5"
             value={value ?? 0}
             onChange={handleFanSpeedChange}
+            style={{ width: '100px', marginLeft: '10px' }}
           />
-          <span>{value || 0}</span>
+          <span style={{ marginLeft: '10px', fontWeight: 'bold' }}>{value ?? 0}</span>
         </div>
       )}
 
-      {/* Sensor reading (temperature, whatever.) */}
+      {/* Sensor */}
       {type === 'sensor' && (
-        <p className="sensor-value">
-          Temperature: {value !== undefined ? `${value}°C` : '--'}
-        </p>
+        <p className="sensor-value">Temperature: {value !== undefined ? `${value}°C` : '--'}</p>
       )}
     </div>
   );

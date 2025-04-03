@@ -106,5 +106,19 @@ body {
   .loading, .error {
     color: #e57373;
     text-align: center;
-  }  
+  }
+
+
+  /* Animation & Interaction Enhancements */
+.toggle-btn {
+  transition: all 0.3s ease;
+}
+.toggle-btn:hover {
+  transform: scale(1.05);
+  filter: brightness(0.9);
+}
+
+.fan-control input[type="range"] {
+  transition: all 0.3s ease;
+}
   

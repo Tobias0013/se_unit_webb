@@ -23,7 +23,7 @@ export async function register(username: string, password: string, admin: boolea
     return await API.post('/auth/register', {
         username,
         password,
-        admin
+        admin 
     });
 }
 
