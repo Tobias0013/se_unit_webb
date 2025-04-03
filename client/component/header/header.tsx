@@ -24,12 +24,13 @@ export default function Header() {
   const [isAdminUser, setIsAdminUser] = useState(isAdmin());
 
   let navBarItems = [
-    { text: "Home", link: "/form-list" },
-    ...(isAdminUser ? [{ text: "<admin>", link: "/admin" }] : []),
+    { text: "Home", link: "/" },
+    ...(isLoggedIn ? [{ text: "Devices", link: "/devices" }] : []),
+    ...(isAdminUser ? [{ text: "Admin", link: "/admin" }] : []),
     isLoggedIn
       ? { text: "Logout", link: "/logout" }
       : { text: "Login/Register", link: "/login" },
-  ];
+];  
 
   useEffect(() => {
     setIsLoggedIn(tokenExists());

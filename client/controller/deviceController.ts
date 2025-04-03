@@ -1,7 +1,8 @@
 import axios from 'axios';
 
-//** Axios setup */
-const API_BASE = 'http://localhost:1234';
+import { API_URL } from './config'; // adjust the path if needed
+
+const API_BASE = API_URL;
 
 /** Interface describing the device object */
 export interface IDevice {
@@ -16,9 +17,12 @@ export interface IDevice {
 // Utility function to always get a fresh token from sessionStorage
 const getAuthHeaders = () => {
   const token = sessionStorage.getItem('token');
+  if (!token) {
+    console.warn("No token found in sessionStorage, requests will be rejected by backend");
+  }
   return {
     headers: {
-      Authorization: token ? `Bearer ${token}` : '',
+      Authorization: token ? `Bearer ${token}` : undefined,
       'Content-Type': 'application/json',
     },
   };
@@ -26,9 +30,10 @@ const getAuthHeaders = () => {
 
 /** 
  * GET /devices. Fetching all devices from backend 
- * Requires a valid Bearer token.
+ * Requires valid Bearer token.
  */
 export async function fetchDevices(): Promise<IDevice[]> {
+  console.log("Calling /devices with token:", sessionStorage.getItem("token"));
   try {
     const response = await axios.get(`${API_BASE}/devices`, getAuthHeaders());
     return response.data;

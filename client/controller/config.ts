@@ -43,5 +43,5 @@ function getMock() {
  */
 function stopProcess(message: string) {
   console.error(message);
-  process.exit(0);
+  process.exit(1);
 }
