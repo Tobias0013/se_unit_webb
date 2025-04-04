@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './style.css';
 import { toast } from "react-toastify";
+import RoomCard from '../../component/RoomCard';
 
 import {
   fetchDevices,
@@ -9,67 +10,60 @@ import {
   IDevice,
 } from '../../controller/deviceController';
 
-// MAY BE AN OPTION: if we fetch user info for greeting/avatar
-// import { fetchCurrentUser, IUser } from '../../controller/userController';
-
 import DeviceList from '../../component/DeviceList';
 
 /**
  * DevicesPage displays smart devices grouped by room and allows controlling them.
- *
- * @returns {JSX.Element} Rendered devices page.
- *
- * @remarks
- * This page fetches device data from backend and provides toggle and fan speed control.
  */
 const DevicesPage: React.FC = () => {
-  // Optional User State (currently unused/commented)
-  // const [user, setUser] = useState<IUser | null>(null);
 
-  // STATE FOR REAL DEVICES DATA
+  // STATE FOR DEVICES
   const [devices, setDevices] = useState<IDevice[] | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
-  // MOCK DEVICES FOR PLACEHOLDER
+  // MOCK DEVICES
   const mockDevices: IDevice[] = [
-    { id: "mock-1", name: "Living Room Lamp", type: "lamp", status: false, room: "Living Room" },
-    { id: "mock-2", name: "Living Room Fan", type: "fan", status: true, value: 2, room: "Living Room" },
-    { id: "mock-3", name: "Bedroom Lamp", type: "lamp", status: true, room: "Bedroom" },
-    { id: "mock-4", name: "Kitchen Sensor", type: "sensor", value: 23, room: "Kitchen" },
-    { id: "mock-5", name: "Bathroom Sensor", type: "sensor", value: 20, room: "Bathroom" },
+    // Living Room
+    { id: "mock-1", name: "Lamp", type: "lamp", status: false, room: "Living Room" },
+    { id: "mock-2", name: "Fan", type: "fan", status: true, value: 2, room: "Living Room" },
+    { id: "mock-3", name: "Sensor", type: "sensor", value: 22, room: "Living Room" },
+    // Bedroom
+    { id: "mock-4", name: "Lamp", type: "lamp", status: true, room: "Bedroom" },
+    { id: "mock-5", name: "Fan", type: "fan", status: false, value: 1, room: "Bedroom" },
+    { id: "mock-6", name: "Sensor", type: "sensor", value: 20, room: "Bedroom" },
+    // Kitchen
+    { id: "mock-7", name: "Lamp", type: "lamp", status: false, room: "Kitchen" },
+    { id: "mock-8", name: "Fan", type: "fan", status: true, value: 3, room: "Kitchen" },
+    { id: "mock-9", name: "Sensor", type: "sensor", value: 21, room: "Kitchen" },
+    // Bathroom
+    { id: "mock-10", name: "Lamp", type: "lamp", status: false, room: "Bathroom" },
+    { id: "mock-11", name: "Fan", type: "fan", status: false, value: 0, room: "Bathroom" },
+    { id: "mock-12", name: "Sensor", type: "sensor", value: 19, room: "Bathroom" },
   ];
 
   // Date/time state
   const [timeString, setTimeString] = useState<string>('');
   const [dateString, setDateString] = useState<string>('');
 
-  // Updating date/time every minute
+  // Updating date/time
   useEffect(() => {
     const updateDateTime = () => {
       const now = new Date();
-      setTimeString(
-        now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-      );
-      setDateString(
-        now.toLocaleDateString([], {
-          year: 'numeric',
-          month: 'short',
-          day: 'numeric',
-        })
-      );
+      setTimeString(now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
+      setDateString(now.toLocaleDateString([], { year: 'numeric', month: 'short', day: 'numeric' }));
     };
     updateDateTime();
     const intervalId = setInterval(updateDateTime, 60_000);
     return () => clearInterval(intervalId);
   }, []);
 
-  // Fetching devices on mount
+  // Fetching devices
   useEffect(() => {
     const loadDevices = async () => {
       try {
         const deviceData = await fetchDevices();
-        const normalizedData = deviceData.map(d => ({
+        const normalizedData: IDevice[] = deviceData.map((d: any) => ({
           id: d.device_id,
           name: d.device_name,
           type: d.device_type,
@@ -77,6 +71,7 @@ const DevicesPage: React.FC = () => {
           status: d.status === "on",
           value: d.value ?? 0
         }));
+
 
         setDevices(normalizedData.length > 0 ? normalizedData : mockDevices);
       } catch (err: unknown) {
@@ -90,7 +85,22 @@ const DevicesPage: React.FC = () => {
     loadDevices();
   }, []);
 
-  // Toggle device handler (ONLY lamps will connect to backend)
+  // ✅ LIVE temperature fluctuation for mock sensors
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setDevices(prev => prev?.map(device => {
+        if (device.type === "sensor" && typeof device.id === "string" && device.id.startsWith("mock")) {
+          const variation = parseFloat((Math.random() * 2 - 1).toFixed(1));
+          const newTemp = Math.max(18, Math.min(28, (device.value ?? 21) + variation));
+          return { ...device, value: parseFloat(newTemp.toFixed(1)) };
+        }
+        return device;
+      }) || null);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, []);
+
+  // Toggle device
   const handleToggle = async (device: IDevice) => {
     try {
       const isMock = typeof device.id === 'string' && device.id.startsWith('mock');
@@ -109,7 +119,7 @@ const DevicesPage: React.FC = () => {
     }
   };
 
-  // Fan speed handler (stays mock-only)
+  // Fan speed handler
   const handleSetFanSpeed = async (device: IDevice, speed: number) => {
     try {
       const isMock = typeof device.id === 'string' && device.id.startsWith('mock');
@@ -128,13 +138,13 @@ const DevicesPage: React.FC = () => {
     }
   };
 
-  // QUICK ACCESS BUTTONS (MOOD BUTTONS) will now affect ONLY mock devices
+  // Quick access moods
   const handleQuickAccess = (scene: string) => {
     setDevices((prev) =>
       prev
         ? prev.map((device) => {
             const isMock = typeof device.id === 'string' && device.id.startsWith('mock');
-            if (!isMock) return device; // do nothing on real devices
+            if (!isMock) return device;
 
             if (device.type === "lamp") {
               const newStatus = scene === "Wake Up" || scene === "Party";
@@ -174,7 +184,7 @@ const DevicesPage: React.FC = () => {
 
   return (
     <div className="devices-page">
-      {/* Header */}
+
       <header className="top-bar">
         <div className="time-date">
           <span className="time">{timeString}</span>
@@ -187,7 +197,6 @@ const DevicesPage: React.FC = () => {
         <button className="settings-btn">Settings</button>
       </header>
 
-      {/* Greeting and quick access buttons */}
       <section className="greeting-section">
         <h1>Good morning!</h1>
         <div className="quick-access">
@@ -199,30 +208,36 @@ const DevicesPage: React.FC = () => {
         </div>
       </section>
 
-      {/* Rooms and devices */}
       <section className="rooms-section">
         <h2>Rooms</h2>
-        {rooms.map((room) => {
-          const roomDevices = devices?.filter(
-            (d) => (d.room || 'Other') === room
-          );
-          return (
-            <div className="room" key={room}>
-              <div className="room-header">
-                <div className="room-icon">🏠</div>
-                <h3 className="room-name">{room}</h3>
-              </div>
-              <DeviceList
-                devices={roomDevices || []}
+        <div className="room-grid">
+          {rooms.map((room) => {
+            const roomDevices = devices?.filter((d) => (d.room || 'Other') === room) || [];
+            return (
+              <RoomCard
+                key={room}
+                roomName={room}
+                devices={roomDevices}
                 onToggle={handleToggle}
                 onSetFanSpeed={handleSetFanSpeed}
               />
-            </div>
-          );
-        })}
+            );
+          })}
+        </div>
       </section>
     </div>
   );
+};
+
+// ROOM ICONS
+const getRoomEmoji = (room: string) => {
+  switch (room) {
+    case "Living Room": return "🛋";
+    case "Bedroom": return "🛏";
+    case "Kitchen": return "🍳";
+    case "Bathroom": return "🛁";
+    default: return "🏠";
+  }
 };
 
 export default DevicesPage;

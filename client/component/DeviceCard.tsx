@@ -3,12 +3,15 @@ import { toast } from "react-toastify";
 import { IDevice } from '../controller/deviceController';
 
 interface DeviceCardProps {
-  device: IDevice | null;
+  device: IDevice | null;  // Allow null to handle potential missing data
   onToggle: (device: IDevice) => Promise<void>;
   onSetFanSpeed: (device: IDevice, speed: number) => Promise<void>;
 }
 
-// Rendering device card
+/**
+ * Renders single device card with controls depending on device type (lamp, fan, sensor).
+ * Some fallback logic if device data is missing / invalid.
+ */
 const DeviceCard: React.FC<DeviceCardProps> = ({ device, onToggle, onSetFanSpeed }) => {
   if (!device) {
     return (
@@ -21,10 +24,11 @@ const DeviceCard: React.FC<DeviceCardProps> = ({ device, onToggle, onSetFanSpeed
   const { id, name, type, status, value } = device;
 
   const typeLabel = type === 'lamp' ? '💡 Lamp' :
-    type === 'fan' ? '🌀 Fan' :
-    type === 'sensor' ? '🌡 Sensor' :
-    type;
+                    type === 'fan' ? '🌀 Fan' :
+                    type === 'sensor' ? '🌡 Sensor' :
+                    type;
 
+  // Handler for toggling device on/off
   const handleToggleClick = useCallback(async () => {
     try {
       if (type === 'lamp' || type === 'fan') {
@@ -36,6 +40,7 @@ const DeviceCard: React.FC<DeviceCardProps> = ({ device, onToggle, onSetFanSpeed
     }
   }, [device, onToggle, type]);
 
+  // Handler for fan speed slider
   const handleFanSpeedChange = useCallback(
     async (e: React.ChangeEvent<HTMLInputElement>) => {
       try {
@@ -58,14 +63,12 @@ const DeviceCard: React.FC<DeviceCardProps> = ({ device, onToggle, onSetFanSpeed
       </h3>
       <p className="device-type">{typeLabel}</p>
 
-      {/* Toggle */}
       {(type === 'lamp' || type === 'fan') && (
         <button className="toggle-btn" onClick={handleToggleClick}>
           {status ? 'Turn Off' : 'Turn On'}
         </button>
       )}
 
-      {/* Fan speed */}
       {type === 'fan' && (
         <div className="fan-control">
           <label>Fan Speed:</label>
@@ -81,7 +84,6 @@ const DeviceCard: React.FC<DeviceCardProps> = ({ device, onToggle, onSetFanSpeed
         </div>
       )}
 
-      {/* Sensor */}
       {type === 'sensor' && (
         <p className="sensor-value">Temperature: {value !== undefined ? `${value}°C` : '--'}</p>
       )}
