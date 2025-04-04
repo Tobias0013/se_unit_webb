@@ -9,7 +9,7 @@ interface DeviceCardProps {
 }
 
 /**
- * Renders single device card with controls depending on device type (lamp, fan, sensor).
+ * Renders single device card with controls depending on device type (light, fan, sensor).
  * Some fallback logic if device data is missing / invalid.
  */
 const DeviceCard: React.FC<DeviceCardProps> = ({ device, onToggle, onSetFanSpeed }) => {
@@ -23,7 +23,7 @@ const DeviceCard: React.FC<DeviceCardProps> = ({ device, onToggle, onSetFanSpeed
 
   const { id, name, type, status, value } = device;
 
-  const typeLabel = type === 'lamp' ? '💡 Lamp' :
+  const typeLabel = type === 'light' ? '💡 Light' :
                     type === 'fan' ? '🌀 Fan' :
                     type === 'sensor' ? '🌡 Sensor' :
                     type;
@@ -31,7 +31,7 @@ const DeviceCard: React.FC<DeviceCardProps> = ({ device, onToggle, onSetFanSpeed
   // Handler for toggling device on/off
   const handleToggleClick = useCallback(async () => {
     try {
-      if (type === 'lamp' || type === 'fan') {
+      if (type === 'light' || type === 'fan') {
         await onToggle(device);
       }
     } catch (err) {
@@ -63,7 +63,7 @@ const DeviceCard: React.FC<DeviceCardProps> = ({ device, onToggle, onSetFanSpeed
       </h3>
       <p className="device-type">{typeLabel}</p>
 
-      {(type === 'lamp' || type === 'fan') && (
+      {(type === 'light' || type === 'fan') && (
         <button className="toggle-btn" onClick={handleToggleClick}>
           {status ? 'Turn Off' : 'Turn On'}
         </button>

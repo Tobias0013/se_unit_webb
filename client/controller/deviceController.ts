@@ -7,7 +7,7 @@ import API from './API/connection';
 export interface IDevice {
   id: string;
   name: string;
-  type: 'lamp' | 'fan' | 'sensor';
+  type: 'light' | 'fan' | 'sensor';
   status?: boolean; // on/off status
   value?: number;   // fan speed / temperature etc.
   room?: string;    // Living Room, Kitchen, etc.
@@ -43,7 +43,7 @@ export async function fetchDevices(): Promise<IDevice[]> {
 }
 
 /** 
- * PATCH /devices/{device_id}/toggle - Toggle lamp status
+ * PATCH /devices/{device_id}/toggle - Toggle light status
  */
 export async function toggleDevice(deviceId: string, newState: boolean): Promise<void> {
   try {

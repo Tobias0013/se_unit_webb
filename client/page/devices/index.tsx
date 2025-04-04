@@ -25,19 +25,19 @@ const DevicesPage: React.FC = () => {
   // MOCK DEVICES
   const mockDevices: IDevice[] = [
     // Living Room
-    { id: "mock-1", name: "Lamp", type: "lamp", status: false, room: "Living Room" },
+    { id: "mock-1", name: "Light", type: "light", status: false, room: "Living Room" },
     { id: "mock-2", name: "Fan", type: "fan", status: true, value: 2, room: "Living Room" },
     { id: "mock-3", name: "Sensor", type: "sensor", value: 22, room: "Living Room" },
     // Bedroom
-    { id: "mock-4", name: "Lamp", type: "lamp", status: true, room: "Bedroom" },
+    { id: "mock-4", name: "Light", type: "light", status: true, room: "Bedroom" },
     { id: "mock-5", name: "Fan", type: "fan", status: false, value: 1, room: "Bedroom" },
     { id: "mock-6", name: "Sensor", type: "sensor", value: 20, room: "Bedroom" },
     // Kitchen
-    { id: "mock-7", name: "Lamp", type: "lamp", status: false, room: "Kitchen" },
+    { id: "mock-7", name: "Light", type: "light", status: false, room: "Kitchen" },
     { id: "mock-8", name: "Fan", type: "fan", status: true, value: 3, room: "Kitchen" },
     { id: "mock-9", name: "Sensor", type: "sensor", value: 21, room: "Kitchen" },
     // Bathroom
-    { id: "mock-10", name: "Lamp", type: "lamp", status: false, room: "Bathroom" },
+    { id: "mock-10", name: "Light", type: "light", status: false, room: "Bathroom" },
     { id: "mock-11", name: "Fan", type: "fan", status: false, value: 0, room: "Bathroom" },
     { id: "mock-12", name: "Sensor", type: "sensor", value: 19, room: "Bathroom" },
   ];
@@ -104,7 +104,7 @@ const DevicesPage: React.FC = () => {
   const handleToggle = async (device: IDevice) => {
     try {
       const isMock = typeof device.id === 'string' && device.id.startsWith('mock');
-      if (!isMock && device.type === 'lamp') {
+      if (!isMock && device.type === 'light') {
         await toggleDevice(device.id, !device.status);
       }
       setDevices((prev) =>
@@ -146,7 +146,7 @@ const DevicesPage: React.FC = () => {
             const isMock = typeof device.id === 'string' && device.id.startsWith('mock');
             if (!isMock) return device;
 
-            if (device.type === "lamp") {
+            if (device.type === "light") {
               const newStatus = scene === "Wake Up" || scene === "Party";
               return { ...device, status: newStatus };
             }
