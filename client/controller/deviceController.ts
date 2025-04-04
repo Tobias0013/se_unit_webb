@@ -1,8 +1,7 @@
-import axios from 'axios';
+import API from './API/connection';
 
-import { API_URL } from './config'; // adjust the path if needed
-
-const API_BASE = API_URL;
+// import { API_URL } from './config'; // <-- NOT NEEDED
+// const API_BASE = API_URL; <-- COMMENTED OUT TO CHANGE TO CENTRALIZED API
 
 /** Interface describing the device object */
 export interface IDevice {
@@ -34,7 +33,8 @@ const getAuthHeaders = () => {
 export async function fetchDevices(): Promise<IDevice[]> {
   console.log("Calling /devices with token:", sessionStorage.getItem("token"));
   try {
-    const response = await axios.get(`${API_BASE}/devices`, getAuthHeaders());
+    // const response = await axios.get(`${API_BASE}/devices`, getAuthHeaders()); <-- OLD
+    const response = await API.get('/devices', getAuthHeaders());
     return response.data;
   } catch (error: any) {
     console.error('Error fetching devices:', error);
@@ -48,7 +48,8 @@ export async function fetchDevices(): Promise<IDevice[]> {
 export async function toggleDevice(deviceId: string, newState: boolean): Promise<void> {
   try {
     const status = newState ? "on" : "off";
-    await axios.patch(`${API_BASE}/devices/${deviceId}/toggle`, { status }, getAuthHeaders());
+    // await axios.patch(`${API_BASE}/devices/${deviceId}/toggle`, { status }, getAuthHeaders()); <-- OLD
+    await API.patch(`/devices/${deviceId}/toggle`, { status }, getAuthHeaders());
   } catch (error: any) {
     console.error("Error toggling device:", error);
     throw new Error(
@@ -62,7 +63,8 @@ export async function toggleDevice(deviceId: string, newState: boolean): Promise
  */
 export async function updateFanSpeed(deviceId: string, speed: number): Promise<void> {
   try {
-    await axios.put(`${API_BASE}/devices/${deviceId}`, { value: speed }, getAuthHeaders());
+    // await axios.put(`${API_BASE}/devices/${deviceId}`, { value: speed }, getAuthHeaders()); <-- OLD
+    await API.put(`/devices/${deviceId}`, { value: speed }, getAuthHeaders());
   } catch (error: any) {
     console.error("Error updating fan speed:", error);
     throw new Error(
