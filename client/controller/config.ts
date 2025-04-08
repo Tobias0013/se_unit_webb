@@ -11,6 +11,7 @@ export const API_URL = getAPIURL();
  * @returns {string} The API URL or an empty string if in mock mode or if there's an error.
  */
 function getAPIURL() {
+  console.log("🔍 Injected API_URL:", process.env.API_URL); // <-- FOR TROUBLESHOOTING
   if (process.env.MOCK === "true") {
     return "";
   }
@@ -43,5 +44,5 @@ function getMock() {
  */
 function stopProcess(message: string) {
   console.error(message);
-  process.exit(0);
+  process.exit(1);
 }

@@ -62,4 +62,5 @@ make help
 ## Credits
 
 - [Tobias0013](https://github.com/Tobias0013)
+- [Securella](https://github.com/Securella)
   //TODO: ADD ALL CONTRIBUTERS

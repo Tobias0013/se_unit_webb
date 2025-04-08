@@ -1,9 +1,11 @@
-const HtmlWebPackPlugin = require("html-webpack-plugin") ;
+const HtmlWebPackPlugin = require("html-webpack-plugin");
 const Dotenv = require('dotenv-webpack');
 
 module.exports = {
   devServer: {
     historyApiFallback: true,
+    hot: true,
+  port: 8080,
   },
   output: {
     publicPath: "/"
@@ -19,11 +21,8 @@ module.exports = {
         },
       },
       {
-        test: /.css$/,
-        use: [
-            'style-loader',
-            'css-loader'
-        ]
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader']
       },
     ],
   },
@@ -32,7 +31,9 @@ module.exports = {
       template: "./client/index.html",
       filename: "./index.html",
     }),
-    new Dotenv(),
+    new Dotenv({
+      systemvars: true, // explicitly load system variables
+    }),
   ],
   resolve: {
     extensions: ['.tsx', '.ts', '.js']
