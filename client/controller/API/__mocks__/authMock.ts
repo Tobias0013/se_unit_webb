@@ -1,4 +1,4 @@
-import { use } from "react";
+/* Author(s): Tobias Vinblad */
 
 export const mockRegister = {
     user_id: 1,

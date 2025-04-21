@@ -1,3 +1,5 @@
+/* Author(s): Tobias Vinblad */
+
 import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 
@@ -27,11 +29,12 @@ export default function Header() {
   let navBarItems = [
     { text: "Home", link: "/" },
     ...(isLoggedIn ? [{ text: "Devices", link: "/devices" }] : []),
+    ...(isLoggedIn ? [{ text: "Add Device", link: "/addDevice" }] : []),
     ...(isAdminUser ? [{ text: "Admin", link: "/admin" }] : []),
     isLoggedIn
       ? { text: "Logout", link: "/logout" }
       : { text: "Login/Register", link: "/login" },
-];  
+  ];
 
   useEffect(() => {
     setIsLoggedIn(tokenExists());
@@ -41,20 +44,26 @@ export default function Header() {
   return (
     <header>
       <Link to={"/"}>
-      <div className="header-logo">
-        <p>{"SmartHouse"}</p>
-      </div>
+        <div className="header-logo">
+          <p>{"SmartHouse"}</p>
+        </div>
       </Link>
 
-      <div className="header-nav-icon" onClick={() => setShowNavBar(!showNavBar)}>
-      <span className="material-icons">{showNavBar ? "menu_open" : "menu" }</span>
+      <div
+        className="header-nav-icon"
+        onClick={() => setShowNavBar(!showNavBar)}
+      >
+        <span className="material-icons">
+          {showNavBar ? "menu_open" : "menu"}
+        </span>
       </div>
 
-      <div className={"header-nav"} style={
-            showNavBar
-              ? { height: `${navBarItems.length * 4.3 + 1.5}rem` }
-              : {}
-                }>
+      <div
+        className={"header-nav"}
+        style={
+          showNavBar ? { height: `${navBarItems.length * 4.3 + 1.5}rem` } : {}
+        }
+      >
         <ul className="header-navbar" onClick={() => setShowNavBar(false)}>
           {navBarItems.map((item) => {
             return (

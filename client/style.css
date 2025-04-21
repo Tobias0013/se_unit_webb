@@ -1,3 +1,5 @@
+/* Author(s): Tobias Vinblad */
+
 html {
   font-size: 62.5%;
   font-family: "Open Sans", sans-serif;
@@ -10,4 +12,10 @@ html {
 a {
   text-decoration: none;
   color: currentColor;
+}
+
+.custom-toast {
+  font-size: 1.5rem; /* Increase font size */
+  padding: 20px; /* Add padding */
+  width: 400px; /* Increase width */
 }

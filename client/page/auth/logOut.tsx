@@ -1,7 +1,8 @@
+/* Author(s): Tobias Vinblad */
+
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { clearToken } from "../../controller/jwtToken";
-
 
 /**
  * A React component that handles user logout.
