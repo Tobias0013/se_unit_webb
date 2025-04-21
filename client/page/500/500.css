@@ -1,0 +1,40 @@
+/* Author(s): Tobias Vinblad */
+
+.error-500-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: calc(100vh - 4.2rem - 1px);
+  text-align: center;
+  background-color: #f8f9fa;
+  color: #333;
+  font-family: Arial, sans-serif;
+}
+
+.error-500-title {
+  font-size: 6rem;
+  font-weight: bold;
+  margin: 0;
+  color: red;
+}
+
+.error-500-message {
+  font-size: 1.5rem;
+  margin: 1rem 0;
+}
+
+.error-500-button {
+  font-size: 1.5rem;
+  color: red;
+  text-decoration: none;
+  border: 1px solid red;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.error-500-button:hover {
+  background-color: red;
+  color: #fff;
+}
