@@ -1,3 +1,5 @@
+/* Author(s): Tobias Vinblad */
+
 export const API_URL = getAPIURL();
 /**
  * Retrieves the API URL from the environment variables.

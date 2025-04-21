@@ -1,149 +1,149 @@
-/* CSS file for header component */
+/* Author(s): Tobias Vinblad */
 
 header {
-    display: flex;
-    width: 100%;
-    height: fit-content;
-    align-items: center;
-    border-bottom: #acc4b5 solid 1px;
+  display: flex;
+  width: 100%;
+  height: fit-content;
+  align-items: center;
+  border-bottom: #acc4b5 solid 1px;
 }
 
 header a {
-    text-decoration: none;
-    color: black;
+  text-decoration: none;
+  color: black;
 }
 
 /* Header Logo */
 
 .header-logo {
-    width: fit-content;
-    height: fit-content;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-left: 4rem;
+  width: fit-content;
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-left: 4rem;
 }
 
 .header-logo > p {
-    color: #3a3a3a;
-    text-align: left;
-    font-size: 4rem;
-    line-height: 4.2rem;
-    font-weight: 700;
+  color: #3a3a3a;
+  text-align: left;
+  font-size: 4rem;
+  line-height: 4.2rem;
+  font-weight: 700;
 }
 
 /* Navigation */
 
-.header-nav-icon{
-    visibility: hidden;
+.header-nav-icon {
+  visibility: hidden;
 }
 
 .header-nav {
-    margin-left: auto;
+  margin-left: auto;
 }
 
 .header-navbar {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    list-style-type: none;
-    padding-left: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  list-style-type: none;
+  padding-left: 0;
 
-    margin-right: 4rem;
+  margin-right: 4rem;
 }
 
 .header-navbar > li > a {
-    padding: 1rem 1.2rem;
-    text-decoration: none;
-    font-size: 1.8rem;
-    white-space: nowrap;
+  padding: 1rem 1.2rem;
+  text-decoration: none;
+  font-size: 1.8rem;
+  white-space: nowrap;
 }
 
 .header-navbar > li :hover {
-    background-color: rgb(237, 237, 237);
-    border-radius: 9px;
+  background-color: rgb(237, 237, 237);
+  border-radius: 9px;
 }
 
 /* Mobile Styling */
 @media only screen and (orientation: portrait) {
-    header {
-        border-bottom: #acc4b5 solid 0px;
-        margin-bottom: 1rem;
-    }
+  header {
+    border-bottom: #acc4b5 solid 0px;
+    margin-bottom: 1rem;
+  }
 
-    html, body {
-        overflow-x: hidden;
-    }
-    body {
-        position: relative
-    }
+  html,
+  body {
+    overflow-x: hidden;
+  }
+  body {
+    position: relative;
+  }
 
-    header{
-        flex-direction: column;
-        height: fit-content;
-    }
-    
-    /* Header Logo */
-    
-    .header-logo {
-        margin: 0;
-        
-    }
-    
-    /* Navigation */
+  header {
+    flex-direction: column;
+    height: fit-content;
+  }
 
-    .header-nav-icon{
-        visibility: visible;
-        position: absolute;
-        right: 0;
-        top: 0;
-        margin: 0.5rem 1rem 0 0;
-    }
+  /* Header Logo */
 
-    .header-nav-icon > span{
-        font-size: 4.5rem;
-    }
-    
-    .header-navbar{
-        gap: 0;
-        flex-direction: column;
-        margin: 1rem 0 0 0;
-        width: 100%;
-    }
+  .header-logo {
+    margin: 0;
+  }
 
-    .header-navbar.second {
-        border-top: none;
-        margin-top: 0;
-        padding-top: 0;
-    }
+  /* Navigation */
 
-    .header-nav{
-        overflow: hidden;
-        transition: all 400ms;
-        height: 0rem;
-        width: 100%;
-    }
+  .header-nav-icon {
+    visibility: visible;
+    position: absolute;
+    right: 0;
+    top: 0;
+    margin: 0.5rem 1rem 0 0;
+  }
 
-    .header-nav.open{
-        height: 27rem;
-    }
+  .header-nav-icon > span {
+    font-size: 4.5rem;
+  }
 
-    .header-navbar > li {
-        width: 100%;
-        height: fit-content;
-    }
-    
-    .header-navbar:not(:last-of-type) > li:first-of-type{
-        border-top: rgb(0, 0, 0, 70%) 2px solid;    
-    }
+  .header-navbar {
+    gap: 0;
+    flex-direction: column;
+    margin: 1rem 0 0 0;
+    width: 100%;
+  }
 
-    .header-navbar > li {
-        border-bottom: rgb(0, 0, 0, 70%) 2px solid;
-        text-align: center;
-        width: 100%;
-        padding: 1rem 0;
+  .header-navbar.second {
+    border-top: none;
+    margin-top: 0;
+    padding-top: 0;
+  }
 
-        display: block;
-    }
+  .header-nav {
+    overflow: hidden;
+    transition: all 400ms;
+    height: 0rem;
+    width: 100%;
+  }
+
+  .header-nav.open {
+    height: 27rem;
+  }
+
+  .header-navbar > li {
+    width: 100%;
+    height: fit-content;
+  }
+
+  .header-navbar:not(:last-of-type) > li:first-of-type {
+    border-top: rgb(0, 0, 0, 70%) 2px solid;
+  }
+
+  .header-navbar > li {
+    border-bottom: rgb(0, 0, 0, 70%) 2px solid;
+    text-align: center;
+    width: 100%;
+    padding: 1rem 0;
+
+    display: block;
+  }
 }

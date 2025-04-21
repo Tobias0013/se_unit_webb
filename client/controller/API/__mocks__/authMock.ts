@@ -1,3 +1,5 @@
+/* Author(s): Tobias Vinblad */
+
 export const mockRegister = {
     user_id: 1,
     username: "idk",

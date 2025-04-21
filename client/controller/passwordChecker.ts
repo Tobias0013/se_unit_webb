@@ -1,3 +1,5 @@
+/* Author(s): Tobias Vinblad */
+
 import { passwordStrength } from "check-password-strength";
 
 /**

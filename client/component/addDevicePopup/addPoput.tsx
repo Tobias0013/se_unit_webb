@@ -1,3 +1,5 @@
+/* Author(s): Tobias Vinblad */
+
 // @ts-nocheck
 import React, { useState } from "react";
 import Popup from "reactjs-popup";

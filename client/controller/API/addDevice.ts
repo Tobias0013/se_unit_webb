@@ -1,3 +1,5 @@
+/* Author(s): Tobias Vinblad */
+
 import API from "./connection";
 import { MOCK } from "./../config";
 import { mockDevices, mockRegisterDevice } from "./__mocks__/addDeviceMock";

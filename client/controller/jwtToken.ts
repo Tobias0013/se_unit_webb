@@ -1,3 +1,5 @@
+/* Author(s): Tobias Vinblad */
+
 export type Token = {
   user_id: number;
   username: string;

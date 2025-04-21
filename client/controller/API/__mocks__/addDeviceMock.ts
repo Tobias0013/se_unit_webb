@@ -1,3 +1,5 @@
+/* Author(s): Tobias Vinblad */
+
 export const mockDevices = [
   {
     device_id: 1,
