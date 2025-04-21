@@ -11,3 +11,9 @@ a {
   text-decoration: none;
   color: currentColor;
 }
+
+.custom-toast {
+  font-size: 1.5rem; /* Increase font size */
+  padding: 20px; /* Add padding */
+  width: 400px; /* Increase width */
+}
