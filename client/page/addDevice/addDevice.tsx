@@ -13,6 +13,28 @@ type UnregisteredDevice = {
   device_type: string;
 };
 
+/**
+ * The `AddDevice` component is responsible for displaying a list of unregistered devices
+ * and providing an interface to add them to the system. It fetches the list of devices
+ * using the `useQuery` hook and handles loading, error, and success states.
+ *
+ * @component
+ *
+ * @returns {JSX.Element} A React component that renders a list of unregistered devices
+ * and allows users to add them via a popup interface.
+ *
+ * @remarks
+ * - Displays a loading indicator while fetching data.
+ * - Shows an error message if the data fetch fails.
+ * - Uses the `AddDevicePopup` component to handle the addition of devices.
+ *
+ * @example
+ * ```
+ * function App() {
+ *   return <AddDevice />;
+ * }
+ * ```
+ */
 export default function AddDevice() {
   const {
     data: devices,
