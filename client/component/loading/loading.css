@@ -1,0 +1,14 @@
+/* Author(s): Tobias Vinblad */
+
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #3a3a3a;
+  font-family: sans-serif;
+  font-size: 4rem;
+  font-weight: bold;
+  margin-top: 22.5%;
+}
+
+
