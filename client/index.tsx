@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import "./style.css";
 import HomePage from "./page/home";
 import LoginPage from "./page/auth/login";
@@ -17,22 +18,24 @@ if (!rootElem) {
 }
 
 const root = ReactDOM.createRoot(rootElem);
+const queryClient = new QueryClient();
 
 root.render(
   <React.StrictMode>
-    <BrowserRouter>
-      <Header />
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/devices" element={<DevicesPage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
-        <Route path="/logout" element={<LogOut />} />
-        {/* FIXED: Redirect unknown routes to Devices */}
-        <Route path="*" element={<Navigate to="/devices" replace={true} />} />
-      </Routes>
-    </BrowserRouter>
-    <ToastContainer position="top-right" autoClose={5000} />
+    <QueryClientProvider client={queryClient}>
+      <BrowserRouter>
+        <Header />
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/devices" element={<DevicesPage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
+          <Route path="/logout" element={<LogOut />} />
+          {/* FIXED: Redirect unknown routes to Devices */}
+          <Route path="*" element={<Navigate to="/devices" replace={true} />} />
+        </Routes>
+      </BrowserRouter>
+      <ToastContainer position="top-right" autoClose={5000} />
+    </QueryClientProvider>
   </React.StrictMode>
 );
-
