@@ -11,6 +11,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Header from "./component/header/header";
 import LogOut from "./page/auth/logOut";
+import AddDevice from "./page/addDevice/addDevice";
 
 const rootElem = document.getElementById("root");
 if (!rootElem) {
@@ -31,6 +32,7 @@ root.render(
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/logout" element={<LogOut />} />
+          <Route path="/addDevice" element={<AddDevice />} />
           {/* FIXED: Redirect unknown routes to Devices */}
           <Route path="*" element={<Navigate to="/devices" replace={true} />} />
         </Routes>
