@@ -2,11 +2,13 @@
 
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
 
 import "./addDevice.css";
 import AddDevicePopup from "../../component/addDevicePopup/addPoput";
 import { handleAPIError } from "../../controller/API/connection";
 import { getUnregisteredDevices } from "../../controller/API/addDevice";
+import Loading from "../../component/loading/loading";
 
 type UnregisteredDevice = {
   device_id: number;
@@ -36,6 +38,8 @@ type UnregisteredDevice = {
  * ```
  */
 export default function AddDevice() {
+  const nav = useNavigate();
+
   const {
     data: devices,
     isLoading,
@@ -50,10 +54,10 @@ export default function AddDevice() {
   });
 
   if (isLoading) {
-    return <div className="loading">Loading...</div>;
+    return <Loading />;
   }
   if (isError || !devices) {
-    const message = handleAPIError(error, "AddDevice page");
+    const message = handleAPIError(error, "AddDevice page", nav);
     return <div className="loading">{message}</div>;
   }
 
