@@ -22,7 +22,6 @@ const API = axios.create({
  */
 API.interceptors.request.use((config) => {
   const token = sessionStorage.getItem("token");
-  console.log("Token:", token);
 
   if (token) {
     config.headers.Authorization = token;
@@ -39,13 +38,23 @@ export default API;
  * @param messagePrefix - A string prefix to provide context about where the error occurred.
  * @returns A formatted error message string based on the error details.
  */
-export function handleAPIError(error: any, messagePrefix: string): string {
+export function handleAPIError(
+  error: any,
+  messagePrefix: string,
+  nav?: any
+): string {
   console.error(`Error in ${messagePrefix}:`, error);
   if (error.response) {
     return `${error.response.data.message || error.response.statusText}`;
   } else if (error.request) {
+    if (nav) {
+      nav("/500");
+    }
     return "No response received from the server.";
   } else {
+    if (nav) {
+      nav("/500");
+    }
     return error.message || "An unexpected error occurred.";
   }
 }
