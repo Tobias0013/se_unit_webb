@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useMutation } from "@tanstack/react-query";
 
 import "./auth.css";
 import { login } from "../../controller/API/auth";
@@ -32,21 +33,28 @@ export default function LoginPage() {
   const [password, setPassword] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string>("");
 
+  const mutation = useMutation({
+    mutationFn: async () => {
+      const resp = await login(username, password);
+      return resp;
+    },
+    onError: (error) => {
+      const message = handleAPIError(error, "Login page", navigate);
+      setErrorMessage(message);
+    },
+    onSuccess: (resp) => {
+      setToken(resp.data.token);
+      navigate("/devices");
+    },
+  });
+
   const onFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!username || !password) {
       setErrorMessage("Please fill in all fields");
       return;
     }
-    try {
-      const resp = await login(username, password);
-      setToken(resp.data.token);
-      // Redirecting to /devices after login to directly access devices page
-      navigate("/devices");
-    } catch (error) {
-      const message = handleAPIError(error, "Login page");
-      setErrorMessage(message);
-    }
+    mutation.mutate();
   };
 
   return (

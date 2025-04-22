@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useMutation } from "@tanstack/react-query";
 
 import "./auth.css";
 import { register } from "../../controller/API/auth";
@@ -21,7 +22,7 @@ import {
  * )
  *
  * @returns {JSX.Element} The rendered component.
- * 
+ *
  * @throws {Error} If login fails, an error message is set.
  */
 
@@ -33,6 +34,20 @@ export default function RegisterPage() {
   const [errorMessage, setErrorMessage] = useState<string>("");
   const [strengthText, setStrengthText] = useState<string>("");
 
+  const mutation = useMutation({
+    mutationFn: async () => {
+      const resp = await register(username, password, isAdmin);
+      return resp;
+    },
+    onError: (error) => {
+      const message = handleAPIError(error, "Register page", navigate);
+      setErrorMessage(message);
+    },
+    onSuccess: () => {
+      navigate("/login");
+    },
+  });
+
   const onFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!username || !password) {
@@ -43,13 +58,7 @@ export default function RegisterPage() {
       setErrorMessage("Password is too weak");
       return;
     }
-    try {
-      await register(username, password, isAdmin);
-      navigate("/login");
-    } catch (error) {
-      const message = handleAPIError(error, "Register page");
-      setErrorMessage(message);
-    }
+    mutation.mutate();
   };
 
   const onPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {

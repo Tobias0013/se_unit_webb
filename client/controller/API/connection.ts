@@ -22,7 +22,6 @@ const API = axios.create({
  */
 API.interceptors.request.use((config) => {
   const token = sessionStorage.getItem("token");
-  console.log("Token:", token);
 
   if (token) {
     config.headers.Authorization = token;
@@ -33,19 +32,32 @@ API.interceptors.request.use((config) => {
 export default API;
 
 /**
- * Handles and formats API errors for logging and user-friendly messages.
+ * Handles API errors by logging the error and returning an appropriate error message.
+ * Optionally, it can navigate to a specific route in case of certain errors.
  *
- * @param error - The error object, which may contain response, request, or message details.
- * @param messagePrefix - A string prefix to provide context about where the error occurred.
- * @returns A formatted error message string based on the error details.
+ * @param error - The error object received from the API call.
+ * @param messagePrefix - A string prefix to include in the error log for context.
+ * @param nav - (Optional) A navigation function to redirect the user in case of critical errors.
+ *
+ * @returns A string describing the error, either from the server response or a default message.
  */
-export function handleAPIError(error: any, messagePrefix: string): string {
+export function handleAPIError(
+  error: any,
+  messagePrefix: string,
+  nav?: any
+): string {
   console.error(`Error in ${messagePrefix}:`, error);
   if (error.response) {
     return `${error.response.data.message || error.response.statusText}`;
   } else if (error.request) {
+    if (nav) {
+      nav("/500");
+    }
     return "No response received from the server.";
   } else {
+    if (nav) {
+      nav("/500");
+    }
     return error.message || "An unexpected error occurred.";
   }
 }
