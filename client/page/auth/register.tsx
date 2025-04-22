@@ -47,7 +47,7 @@ export default function RegisterPage() {
       await register(username, password, isAdmin);
       navigate("/login");
     } catch (error) {
-      const message = handleAPIError(error, "Register page");
+      const message = handleAPIError(error, "Register page", navigate);
       setErrorMessage(message);
     }
   };

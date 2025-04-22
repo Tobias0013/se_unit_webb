@@ -41,10 +41,9 @@ export default function LoginPage() {
     try {
       const resp = await login(username, password);
       setToken(resp.data.token);
-      // Redirecting to /devices after login to directly access devices page
       navigate("/devices");
     } catch (error) {
-      const message = handleAPIError(error, "Login page");
+      const message = handleAPIError(error, "Login page", navigate);
       setErrorMessage(message);
     }
   };
