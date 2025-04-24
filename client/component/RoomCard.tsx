@@ -6,8 +6,8 @@ import { IDevice } from '../controller/deviceController';
 interface RoomCardProps {
   roomName: string;
   devices: IDevice[];
-  onToggle: (device: IDevice) => void;
-  onSetFanSpeed: (device: IDevice, speed: number) => void;
+  onToggle: (device: IDevice) => Promise<void>;
+  onSetFanSpeed: (device: IDevice, speed: number) => Promise<void>;
 }
 
 const RoomCard: React.FC<RoomCardProps> = ({ roomName, devices, onToggle, onSetFanSpeed }) => (
