@@ -16,6 +16,34 @@ type addDevicePopupProps = {
   children: any;
 };
 
+/**
+ * A React component that renders a popup for adding a new device. 
+ * The popup allows users to input a device name and location, and submit the data.
+ * 
+ * @component
+ * @param {addDevicePopupProps} props - The props for the AddDevicePopup component.
+ * @param {string} props.deviceId - The unique identifier of the device.
+ * @param {string} props.deviceType - The type of the device.
+ * @param {React.ReactNode} props.children - The trigger element for the popup.
+ * 
+ * @returns {JSX.Element} The rendered AddDevicePopup component.
+ * 
+ * @remarks
+ * - Uses `useMutation` from React Query to handle the device registration process.
+ * - Displays success and error messages using `react-toastify`.
+ * - Includes input validation to ensure all fields are filled before submission.
+ * - Closes the popup automatically upon successful submission.
+ * 
+ * @example
+ * ```
+ * <AddDevicePopup
+ *   deviceId="12345"
+ *   deviceType="Sensor"
+ * >
+ *   <button>Open Add Device Popup</button>
+ * </AddDevicePopup>
+ * ```
+ */
 export default function AddDevicePopup(props: addDevicePopupProps) {
   const { deviceId, deviceType, children } = props;
   const [deviceName, setDeviceName] = useState<string>("");
