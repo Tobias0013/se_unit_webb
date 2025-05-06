@@ -4,7 +4,7 @@
 import React, { useState } from "react";
 import Popup from "reactjs-popup";
 import { toast } from "react-toastify";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import "reactjs-popup/dist/index.css";
 import "./addPopup.css";
 import { registerDevice } from "../../controller/API/addDevice";
@@ -17,23 +17,23 @@ type addDevicePopupProps = {
 };
 
 /**
- * A React component that renders a popup for adding a new device. 
+ * A React component that renders a popup for adding a new device.
  * The popup allows users to input a device name and location, and submit the data.
- * 
+ *
  * @component
  * @param {addDevicePopupProps} props - The props for the AddDevicePopup component.
  * @param {string} props.deviceId - The unique identifier of the device.
  * @param {string} props.deviceType - The type of the device.
  * @param {React.ReactNode} props.children - The trigger element for the popup.
- * 
+ *
  * @returns {JSX.Element} The rendered AddDevicePopup component.
- * 
+ *
  * @remarks
  * - Uses `useMutation` from React Query to handle the device registration process.
  * - Displays success and error messages using `react-toastify`.
  * - Includes input validation to ensure all fields are filled before submission.
  * - Closes the popup automatically upon successful submission.
- * 
+ *
  * @example
  * ```
  * <AddDevicePopup
@@ -46,6 +46,7 @@ type addDevicePopupProps = {
  */
 export default function AddDevicePopup(props: addDevicePopupProps) {
   const { deviceId, deviceType, children } = props;
+  const queryClient = useQueryClient();
   const [deviceName, setDeviceName] = useState<string>("");
   const [deviceLocation, setDeviceLocation] = useState<string>("");
 
@@ -59,6 +60,7 @@ export default function AddDevicePopup(props: addDevicePopupProps) {
         `${deviceName} was successfully added to ${deviceLocation}`,
         { className: "custom-toast" }
       );
+      queryClient.invalidateQueries({ queryKey: ["unregisteredDevices"] });
     },
     onError: (error) => {
       const message = handleAPIError(error, "AddDevicePopup");
