@@ -1,0 +1,93 @@
+/* Author(s): Tobias Vinblad */
+
+.schedule-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+  border-radius: 0.8rem;
+  max-width: 150rem;
+  margin: 0 auto;
+}
+
+.schedule-title {
+  font-size: 2.4rem;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 2rem;
+}
+
+.schedule-add-btn {
+  padding: 1rem 2rem;
+  font-size: 1.6rem;
+  color: #fff;
+  background-color: var(--auth-color);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: opacity 0.3s ease, transform 0.2s ease;
+  margin-bottom: 2rem;
+}
+
+.schedule-add-btn:hover {
+  opacity: 0.7;
+}
+
+.schedule-item-header {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  padding: 2rem 1.5rem;
+  background-color: #f8f9fa;
+  border-bottom: 2px solid #ddd;
+  font-weight: bold;
+  align-items: center;
+}
+
+.schedule-header {
+  font-size: 2rem;
+  color: #333;
+}
+
+.schedule-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+}
+
+.schedule-item {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  padding: 1rem 1.5rem;
+  margin-bottom: 1rem;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  align-items: center;
+}
+
+.schedule-item:hover {
+  background-color: #f1f1f1;
+}
+
+.schedule-text {
+  font-size: 2rem;
+  color: #555;
+}
+
+.schedule-button {
+  padding: 1rem 2rem;
+  font-size: 1.6rem;
+  color: #fff;
+  background-color: red;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: opacity 0.3s ease;
+}
+
+.schedule-button:hover {
+  opacity: 0.7;
+}
