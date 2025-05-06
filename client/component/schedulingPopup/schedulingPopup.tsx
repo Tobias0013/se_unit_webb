@@ -3,7 +3,7 @@
 // @ts-nocheck
 import React, { useState } from "react";
 import Popup from "reactjs-popup";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import "reactjs-popup/dist/index.css";
 import "./schedulingPopup.css";
@@ -20,20 +20,20 @@ type SchedulingPopupProps = {
 
 /**
  * A React component that renders a popup for scheduling actions on devices.
- * 
+ *
  * @component
  * @param {SchedulingPopupProps} props - The properties for the SchedulingPopup component.
  * @param {boolean} props.open - A boolean indicating whether the popup is open.
  * @param {React.Dispatch<React.SetStateAction<boolean>>} props.setOpen - A function to toggle the popup's open state.
  * @param {Array<{ device_id: number; device_name: string; location: string }>} props.devices - An array of devices available for scheduling.
- * 
+ *
  * @returns {JSX.Element} The rendered SchedulingPopup component.
- * 
+ *
  * @remarks
  * - This component uses the `useMutation` hook from React Query to handle scheduling actions.
  * - The user can select a device, a date/time, and an action (e.g., toggle on/off) to schedule.
  * - Displays success or error messages using the `toast` library.
- * 
+ *
  * @example
  * <SchedulingPopup
  *   open={isPopupOpen}
@@ -43,6 +43,7 @@ type SchedulingPopupProps = {
  */
 export default function SchedulingPopup(props: SchedulingPopupProps) {
   const { open, setOpen, devices } = props;
+  const queryClient = useQueryClient();
 
   const [selectedDeviceId, setSelectedDevice] = useState<number>(
     devices[0].device_id
@@ -64,9 +65,12 @@ export default function SchedulingPopup(props: SchedulingPopupProps) {
       return resp.data;
     },
     onSuccess: (data) => {
-      toast.success("Schedule added successfully");
+      toast.success("Schedule added successfully", {
+        className: "custom-toast",
+      });
       console.log("Schedule added:", data);
       setOpen(false);
+      queryClient.invalidateQueries({ queryKey: ["schedules"] });
     },
     onError: (error) => {
       const message = handleAPIError(error, "SchedulingPopup", null);
