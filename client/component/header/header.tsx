@@ -30,6 +30,7 @@ export default function Header() {
     { text: "Home", link: "/" },
     ...(isLoggedIn ? [{ text: "Devices", link: "/devices" }] : []),
     ...(isLoggedIn ? [{ text: "Add Device", link: "/addDevice" }] : []),
+    ...(isLoggedIn ? [{ text: "Schedule", link: "/schedule" }] : []),
     ...(isAdminUser ? [{ text: "Admin", link: "/admin" }] : []),
     isLoggedIn
       ? { text: "Logout", link: "/logout" }

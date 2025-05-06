@@ -16,6 +16,7 @@ import LogOut from "./page/auth/logOut";
 import AddDevice from "./page/addDevice/addDevice";
 import NotFoundPage from "./page/404/404";
 import Error500 from "./page/500/500";
+import SchedulePage from "./page/schedule/schedule";
 
 const rootElem = document.getElementById("root");
 if (!rootElem) {
@@ -37,6 +38,7 @@ root.render(
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/logout" element={<LogOut />} />
           <Route path="/addDevice" element={<AddDevice />} />
+          <Route path="/schedule" element={<SchedulePage />} />
           <Route path="/500" element={<Error500 />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>

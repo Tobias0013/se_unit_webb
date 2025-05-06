@@ -1,0 +1,102 @@
+/* Author(s): Tobias Vinblad */
+
+.schedule-device-content {
+  border-radius: 5px;
+  padding: 0.5rem;
+}
+
+.schedule-device-close {
+  cursor: pointer;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  right: -1rem;
+  top: -1rem;
+  font-size: 2.4rem;
+  border-radius: 50%;
+  border: 1px solid #cfcece;
+  background-color: #fff;
+  width: 3.6rem;
+  height: 3.6rem;
+  transition: background 0.3s ease;
+}
+
+.schedule-device-popup-header {
+  border-bottom: 1px solid gray;
+  font-size: 3rem;
+  text-align: center;
+  padding: 0.5rem;
+}
+
+.schedule-device-popup-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  font-size: 2rem;
+}
+
+.schedule-device-popup-content > select,
+.schedule-device-popup-content > input {
+  background-color: #eee;
+  border: none;
+  padding: 1.2rem 1.5rem;
+  margin: 1rem 0;
+  width: 100%;
+  font-size: 2rem;
+}
+
+.schedule-device-popup-content > select {
+  box-sizing: content-box;
+}
+
+.schedule-device-popup-content > div {
+  width: 100%;
+}
+
+.schedule-device-time > .rdtPicker {
+  min-width: 11.7rem;
+}
+
+.schedule-device-time {
+  transform: translate(-1.3rem, 0);
+}
+
+.schedule-device-time > input {
+  background-color: #eee;
+  border: none;
+  padding: 1.2rem 1.5rem;
+  margin: 1rem 0;
+  width: 10rem;
+  font-size: 2rem;
+  text-align: center;
+}
+
+.schedule-device-close:hover {
+  background-color: #f0f0f0;
+}
+
+.schedule-device-submit {
+  background-color: var(--auth-color);
+  color: #fff;
+  border: none;
+  padding: 1rem 2rem;
+  font-size: 2rem;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: opacity 0.3s ease;
+}
+
+.schedule-device-submit:hover {
+  opacity: 0.7;
+}
+
+@media only screen and (orientation: portrait) {
+  .schedule-device-content {
+    border-radius: 5px;
+    padding: 0.5rem;
+    width: 90%;
+  }
+}
