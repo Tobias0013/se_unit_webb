@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import "./schedule.css";
 import { toast } from "react-toastify";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { NavigateFunction, useNavigate } from "react-router-dom";
 
 import {
@@ -55,6 +55,7 @@ export type Device = {
  */
 export default function SchedulePage() {
   const nav = useNavigate();
+  const queryClient = useQueryClient();
   const [devices, setDevices] = useState<Device[]>([]);
   const [openPopup, setOpenPopup] = useState(false);
   const {
@@ -81,6 +82,7 @@ export default function SchedulePage() {
     },
     onSuccess: () => {
       toast.success("Schedule deleted", { className: "custom-toast" });
+      queryClient.invalidateQueries({ queryKey: ["schedules"] });
     },
     onError: (error) => {
       const message = handleAPIError(error, "Schedule page");
