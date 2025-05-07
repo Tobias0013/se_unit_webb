@@ -24,10 +24,9 @@ To install and set up this project, follow these steps:
 3. Configure the environment variables:
    - Create a new file named `.env` in the root directory of the project.
    - Open the `.env` file and add the following environment variables:
-     ```
-     //TODO: ADD ENVIROMENT VARIABLES
+     ```json
      API_URL=<url to backend>
-     MOCK=<true/false> (mock api)
+     MOCK=<true/false> (mock data)
      ```
 4. Then run the project with `npm start`
 
@@ -50,6 +49,14 @@ The following scripts are available for development and deployment:
 - `npm run build`: This script builds the client-side code for production using webpack in production mode.
 - `npm run start-build`: This script opens the built client in the default web browser at `http://localhost:3000`. //TODO: how to do this since we dont have server to deliver.
 - `npm run remove`: This script removes the `node_modules` directory, which contains the installed dependencies.
+
+### Generate Docs
+To generate documentation for the project, you can use the following command:
+
+```sh
+npm run docs
+```
+This command will create a `docs` directory in the root of the project, containing the generated documentation.
 
 ### Make Commands
 
