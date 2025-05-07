@@ -74,7 +74,7 @@ export default function SchedulingPopup(props: SchedulingPopupProps) {
     },
     onError: (error) => {
       const message = handleAPIError(error, "SchedulingPopup", null);
-      toast.error(message);
+      toast.error(message, { className: "custom-toast" });
     },
   });
 
