@@ -91,3 +91,15 @@
 .schedule-button:hover {
   opacity: 0.7;
 }
+
+@media only screen and (orientation: portrait) {
+  .schedule-container {
+    padding: 0.2rem;
+    max-width: 100%;
+  }
+
+  .schedule-item {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
+  }
+}

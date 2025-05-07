@@ -1,6 +1,6 @@
 /* Author(s): Tobias Vinblad */
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./schedule.css";
 import { toast } from "react-toastify";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -45,6 +45,7 @@ export type Device = {
  * - It displays a list of schedules with details such as device name, location, action time, and action type.
  * - A popup is available for adding new scheduled actions.
  * - Toast notifications are used to provide feedback on successful or failed operations.
+ * - The component also handles mobile orientation changes to adjust the layout accordingly.
  *
  * @example
  * import SchedulePage from './schedule';
@@ -58,6 +59,21 @@ export default function SchedulePage() {
   const queryClient = useQueryClient();
   const [devices, setDevices] = useState<Device[]>([]);
   const [openPopup, setOpenPopup] = useState(false);
+
+  const [onMobile, setOnMobile] = useState(
+    window.matchMedia("(orientation: portrait)").matches
+  );
+
+  useEffect(() => {
+    const handleOrientationChange = () => {
+      setOnMobile(window.matchMedia("(orientation: portrait)").matches);
+    };
+    window.addEventListener("resize", handleOrientationChange);
+    return () => {
+      window.removeEventListener("resize", handleOrientationChange);
+    };
+  }, []);
+
   const {
     data: schedules,
     isLoading,
@@ -69,7 +85,7 @@ export default function SchedulePage() {
       const respSchedules = (await getSchedules()).data;
       const respDevices = (await getDevices()).data;
       console.log(respSchedules);
-      
+
       setDevices(respDevices);
       return mapSchedulesToDevices(respSchedules, respDevices, nav);
     },
@@ -118,20 +134,32 @@ export default function SchedulePage() {
       )}
 
       <ul className="schedule-list">
-        <li className="schedule-item-header">
-          <span className="schedule-header">Device name</span>
-          <span className="schedule-header">Device location</span>
-          <span className="schedule-header">Action time</span>
-          <span className="schedule-header">Action type</span>
-        </li>
+        {!onMobile && (
+          <li className="schedule-item-header">
+            <span className="schedule-header">Device name</span>
+            <span className="schedule-header">Device location</span>
+            <span className="schedule-header">Action time</span>
+            <span className="schedule-header">Action type</span>
+          </li>
+        )}
         {schedules.map((schedule, index) => (
           <li key={index} className="schedule-item">
-            <span className="schedule-text">{schedule.device_name}</span>
-            <span className="schedule-text">{schedule.device_location}</span>
             <span className="schedule-text">
+              {onMobile && <strong>Device name: </strong>}
+              {schedule.device_name}
+            </span>
+            <span className="schedule-text">
+              {onMobile && <strong>Location: </strong>}
+              {schedule.device_location}
+            </span>
+            <span className="schedule-text">
+              {onMobile && <strong>Action time: </strong>}
               {schedule.scheduled_time.toLocaleString()}
             </span>
-            <span className="schedule-text">{schedule.action_type}</span>
+            <span className="schedule-text">
+              {onMobile && <strong>Action type: </strong>}
+              {schedule.action_type}
+            </span>
             <div className="schedule-btn-container">
               <button
                 className="schedule-button"
@@ -183,7 +211,11 @@ function mapSchedulesToDevices(
       device_location: device.location,
       ...schedule,
       scheduled_time: new Date(schedule.scheduled_time),
-      action_type: action[0].charAt(0).toUpperCase() + action[0].slice(1) + " " + action[1],
+      action_type:
+        action[0].charAt(0).toUpperCase() +
+        action[0].slice(1) +
+        " " +
+        action[1],
     };
   });
   return resp;
