@@ -20,8 +20,6 @@ type addDevicePopupProps = {
  * A React component that renders a popup for adding a new device.
  * The popup allows users to input a device name and location, and submit the data.
  *
- * @component
- * @param {addDevicePopupProps} props - The props for the AddDevicePopup component.
  * @param {string} props.deviceId - The unique identifier of the device.
  * @param {string} props.deviceType - The type of the device.
  * @param {React.ReactNode} props.children - The trigger element for the popup.

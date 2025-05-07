@@ -14,7 +14,6 @@ type LoadingProps = {
  * A React functional component that displays a loading animation with a wave effect.
  * Each character of the provided text animates in a wave-like motion.
  *
- * @param props - The properties for the Loading component.
  * @param props.text - The text to display as part of the loading animation. Defaults to "Loading...".
  * @param props.waveSpeed - The speed of the wave animation in seconds. Defaults to 1.5 seconds.
  * @param props.waveHeight - The height of the wave animation in pixels. Defaults to 7.5 pixels.

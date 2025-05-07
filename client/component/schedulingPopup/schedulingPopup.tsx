@@ -21,8 +21,6 @@ type SchedulingPopupProps = {
 /**
  * A React component that renders a popup for scheduling actions on devices.
  *
- * @component
- * @param {SchedulingPopupProps} props - The properties for the SchedulingPopup component.
  * @param {boolean} props.open - A boolean indicating whether the popup is open.
  * @param {React.Dispatch<React.SetStateAction<boolean>>} props.setOpen - A function to toggle the popup's open state.
  * @param {Array<{ device_id: number; device_name: string; location: string }>} props.devices - An array of devices available for scheduling.

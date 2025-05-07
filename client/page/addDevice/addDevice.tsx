@@ -20,8 +20,6 @@ type UnregisteredDevice = {
  * and providing an interface to add them to the system. It fetches the list of devices
  * using the `useQuery` hook and handles loading, error, and success states.
  *
- * @component
- *
  * @returns {JSX.Element} A React component that renders a list of unregistered devices
  * and allows users to add them via a popup interface.
  *
