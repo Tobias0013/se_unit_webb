@@ -43,3 +43,43 @@ export async function registerDevice(
     location: deviceLocation,
   });
 }
+
+/**
+ * Fetches a list of unregistered sensors.
+ *
+ * If the `MOCK` flag is enabled, this function returns a mocked response
+ * containing unregistered sensors. Otherwise, it makes an API call to
+ * retrieve the unregistered sensors from the server.
+ *
+ * @returns A promise that resolves to an object containing the data of unregistered sensors.
+ */
+export async function getUnregisteredSencors() {
+  if (MOCK) {
+    return Promise.resolve({ data: mockDevices });
+  }
+  return await API.get("/sensors");
+}
+
+/**
+ * Registers or updates a sensor with the given details.
+ *
+ * @param sencorID - The unique identifier of the sensor.
+ * @param sencorName - The name of the sensor to be registered or updated.
+ * @param sencorLocation - The location of the sensor.
+ * @returns A promise that resolves to the response of the API call or mock data if `MOCK` is enabled.
+ */
+export async function registerSencor(
+  sencorID: number,
+  sencorName: string,
+  sencorLocation: string
+) {
+  if (MOCK) {
+    return Promise.resolve({
+      data: mockRegisterDevice(sencorID, sencorName, sencorLocation),
+    });
+  }
+  return await API.patch(`/sensors/${sencorID}`, {
+    sensor_name: sencorName,
+    location: sencorLocation,
+  });
+}
