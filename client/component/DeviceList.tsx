@@ -1,3 +1,4 @@
+/* Author(s): Securella */
 import React from 'react';
 import { IDevice } from '../controller/deviceController';
 import DeviceCard from './DeviceCard';

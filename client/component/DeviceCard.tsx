@@ -1,3 +1,4 @@
+/* Author(s): Securella */
 import React, { useCallback } from 'react';
 import { toast } from "react-toastify";
 import { IDevice } from '../controller/deviceController';
