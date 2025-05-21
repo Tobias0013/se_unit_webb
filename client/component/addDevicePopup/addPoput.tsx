@@ -7,50 +7,41 @@ import { toast } from "react-toastify";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import "reactjs-popup/dist/index.css";
 import "./addPopup.css";
-import { registerDevice } from "../../controller/API/addDevice";
+import { registerDevice, registerSencor } from "../../controller/API/addDevice";
 import { handleAPIError } from "../../controller/API/connection";
 
 type addDevicePopupProps = {
   deviceId: number;
   deviceType: string;
+  isSensor?: boolean;
   children: any;
 };
 
 /**
- * A React component that renders a popup for adding a new device.
- * The popup allows users to input a device name and location, and submit the data.
+ * The `AddDevicePopup` component is a modal popup that allows users to add a new device
+ * or sensor to the system. It provides input fields for the name and location,
+ * and handles the submission of this data to the server.
  *
- * @param {string} props.deviceId - The unique identifier of the device.
- * @param {string} props.deviceType - The type of the device.
+ * @param {addDevicePopupProps} props - The properties passed to the component.
+ * @param {number} props.deviceId - The ID of the device or sensor to be added.
+ * @param {string} props.deviceType - The type of the device or sensor.
+ * @param {boolean} [props.isSensor] - Optional flag indicating if the item is a sensor.
  * @param {React.ReactNode} props.children - The trigger element for the popup.
  *
- * @returns {JSX.Element} The rendered AddDevicePopup component.
- *
- * @remarks
- * - Uses `useMutation` from React Query to handle the device registration process.
- * - Displays success and error messages using `react-toastify`.
- * - Includes input validation to ensure all fields are filled before submission.
- * - Closes the popup automatically upon successful submission.
- *
- * @example
- * ```
- * <AddDevicePopup
- *   deviceId="12345"
- *   deviceType="Sensor"
- * >
- *   <button>Open Add Device Popup</button>
- * </AddDevicePopup>
- * ```
+ * @returns {JSX.Element} A React component that renders a modal popup for adding devices.
  */
 export default function AddDevicePopup(props: addDevicePopupProps) {
   const { deviceId, deviceType, children } = props;
+  const isSensor = props.isSensor || false;
   const queryClient = useQueryClient();
   const [deviceName, setDeviceName] = useState<string>("");
   const [deviceLocation, setDeviceLocation] = useState<string>("");
 
   const mutation = useMutation({
     mutationFn: async () => {
-      const resp = await registerDevice(deviceId, deviceName, deviceLocation);
+      const resp = isSensor
+        ? await registerSencor(deviceId, deviceName, deviceLocation)
+        : await registerDevice(deviceId, deviceName, deviceLocation);
       return resp;
     },
     onSuccess: () => {
@@ -58,7 +49,9 @@ export default function AddDevicePopup(props: addDevicePopupProps) {
         `${deviceName} was successfully added to ${deviceLocation}`,
         { className: "custom-toast" }
       );
-      queryClient.invalidateQueries({ queryKey: ["unregisteredDevices"] });
+      queryClient.invalidateQueries({
+        queryKey: [isSensor ? "unregisteredSencors" : "unregisteredDevices"],
+      });
     },
     onError: (error) => {
       const message = handleAPIError(error, "AddDevicePopup");
@@ -83,12 +76,12 @@ export default function AddDevicePopup(props: addDevicePopupProps) {
             &times;
           </button>
           <div className="add-device-popup-header">
-            Device: {deviceId}, Type: {deviceType}
+            {isSensor ? "Sencor" : "Device"}: {deviceId}, Type: {deviceType}
           </div>
           <div className="add-device-popup-content">
             <input
               type="text"
-              placeholder="Enter device name"
+              placeholder="Enter name"
               onChange={(e) => setDeviceName(e.target.value)}
             />
             <input
@@ -112,7 +105,7 @@ export default function AddDevicePopup(props: addDevicePopupProps) {
               className="add-device-submit"
               onClick={handleSubmit}
             >
-              Add device
+              Add {isSensor ? "sencor" : "device"}
             </button>
           </div>
         </>

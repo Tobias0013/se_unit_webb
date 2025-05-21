@@ -4,7 +4,6 @@ import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 
-import "./addDevice.css";
 import AddDevicePopup from "../../component/addDevicePopup/addPoput";
 import { handleAPIError } from "../../controller/API/connection";
 import { getUnregisteredDevices } from "../../controller/API/addDevice";
