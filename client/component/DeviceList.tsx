@@ -7,13 +7,14 @@ interface DeviceListProps {
   devices: IDevice[] | null; // Allow null to handle missing data
   onToggle: (device: IDevice) => Promise<void>;
   onSetFanSpeed: (device: IDevice, speed: number) => Promise<void>;
+  onCommand: (device: IDevice, command: string) => Promise<void>;
 }
 
 /**
  * Renders list of devices via DeviceCard.
  * If devices array is null / empty, displays a fallback message.
  */
-const DeviceList: React.FC<DeviceListProps> = ({ devices, onToggle, onSetFanSpeed }) => {
+const DeviceList: React.FC<DeviceListProps> = ({ devices, onToggle, onSetFanSpeed, onCommand }) => {
   if (!devices) {
     return <div className="device-list error">No device data available.</div>;
   }
@@ -30,6 +31,7 @@ const DeviceList: React.FC<DeviceListProps> = ({ devices, onToggle, onSetFanSpee
           device={device}
           onToggle={onToggle}
           onSetFanSpeed={onSetFanSpeed}
+          onCommand={onCommand}
         />
       ))}
     </div>

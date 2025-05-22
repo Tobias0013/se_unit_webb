@@ -7,6 +7,7 @@ interface DeviceCardProps {
   device: IDevice | null;  // Allow null to handle potential missing data
   onToggle: (device: IDevice) => Promise<void>;
   onSetFanSpeed: (device: IDevice, speed: number) => Promise<void>;
+  onCommand: (device: IDevice, command: string) => Promise<void>;
 }
 
 /**
@@ -27,6 +28,9 @@ const DeviceCard: React.FC<DeviceCardProps> = ({ device, onToggle, onSetFanSpeed
   const typeLabel = type === 'light' ? '💡 Light' :
                     type === 'fan' ? '🌀 Fan' :
                     type === 'sensor' ? '🌡 Sensor' :
+                    type === 'buzzer' ? '🔔 Buzzer' :
+                    type === 'coffee_machine' ? '☕ Coffee' :
+                    type === 'mediaplayer' ? '🎵 Player' :
                     type;
 
   // Handler for toggling device on/off
