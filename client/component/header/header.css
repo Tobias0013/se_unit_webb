@@ -1,5 +1,5 @@
 /* Author(s): Tobias Vinblad */
-
+/*            Securella added logo */
 header {
   display: flex;
   width: 100%;
@@ -19,16 +19,17 @@ header a {
   width: fit-content;
   height: fit-content;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;    /* was column */
   align-items: center;
-  margin-left: 4rem;
+  margin-left: 2rem;      /* smaller margin */
+  gap: 1.2rem;            /* space between logo and text */
 }
 
 .header-logo > p {
   color: #3a3a3a;
   text-align: left;
-  font-size: 4rem;
-  line-height: 4.2rem;
+  font-size: 2.2rem;    /* was 4rem, smaller now */
+  line-height: 2.4rem;
   font-weight: 700;
 }
 
@@ -151,5 +152,5 @@ header a {
 .logo-img {
   width: 6rem;   /* adjust if needed */
   height: auto;  /* Keeps logo in place with ok proportions */
-  margin-bottom: 0.5rem;
+  /* removed: margin-bottom: 0.5rem; */
 }

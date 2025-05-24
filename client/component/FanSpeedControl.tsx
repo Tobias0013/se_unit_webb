@@ -1,3 +1,4 @@
+/* Author(s): Securella */
 import React from 'react';
 import './FanSpeedControl.css';
 

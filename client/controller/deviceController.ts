@@ -1,3 +1,4 @@
+/* Author(s): Securella */
 import API from './API/connection';
 import { toast } from 'react-toastify';
 

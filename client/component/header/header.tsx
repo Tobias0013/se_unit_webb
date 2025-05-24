@@ -49,7 +49,7 @@ export default function Header() {
       <Link to={"/"}>
         <div className="header-logo">
         <img src={logo} alt="Smart Home" className="logo-img" />
-          <p>{"SmartHouse"}</p>
+        <p>{"SmartHouse"}</p>
         </div>
       </Link>
 
