@@ -1,4 +1,8 @@
 /* Author(s): Tobias Vinblad */
+/*            Securella  added logs */
+
+console.log("Loaded API URL from env:", process.env.REACT_APP_API_URL);
+console.log("Loaded MOCK from env:", process.env.REACT_APP_MOCK);
 
 export const API_URL = getAPIURL();
 /**
@@ -13,10 +17,10 @@ export const API_URL = getAPIURL();
  * @returns {string} The API URL or an empty string if in mock mode or if there's an error.
  */
 function getAPIURL() {
-  if (process.env.MOCK === "true") {
+  if (process.env.REACT_APP_MOCK === "true") {
     return "";
   }
-  const url = process.env.API_URL;
+  const url = process.env.REACT_APP_API_URL;
   if (!url || url === "" || typeof url !== "string") {
     stopProcess("Missing appropriate API in environment file");
     return "";
@@ -31,7 +35,7 @@ export const MOCK = getMock();
  * @returns {boolean} - Returns `true` if the `MOCK` environment variable is set to "true", otherwise returns `false`.
  */
 function getMock() {
-  const mock = process.env.MOCK;
+  const mock = process.env.REACT_APP_MOCK;
   if (mock && mock === "true") {
     return true;
   }

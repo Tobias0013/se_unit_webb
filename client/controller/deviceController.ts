@@ -1,4 +1,5 @@
 import API from './API/connection';
+import { toast } from 'react-toastify';
 
 // import { API_URL } from './config'; // <-- NOT NEEDED
 // const API_BASE = API_URL;          // <-- COMMENTED OUT TO CHANGE TO CENTRALIZED API

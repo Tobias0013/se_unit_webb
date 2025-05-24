@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import './style.css';
 import { toast } from "react-toastify";
 import RoomCard from '../../component/RoomCard';
+import DeviceList from '../../component/DeviceList';
 
 import {
   fetchDevices,
@@ -10,8 +11,6 @@ import {
   updateFanSpeed,
   IDevice,
 } from '../../controller/deviceController';
-
-import DeviceList from '../../component/DeviceList';
 
 /**
  * DevicesPage displays smart devices grouped by room and allows controlling them.
@@ -160,7 +159,7 @@ const DevicesPage: React.FC = () => {
           })
         : []
     );
-    toast.success("Mood applied to mock devices!");
+    toast.success("Mood applied to devices!");
   };
 
   if (loading) {

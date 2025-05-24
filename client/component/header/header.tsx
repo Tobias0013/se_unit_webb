@@ -1,10 +1,12 @@
 /* Author(s): Tobias Vinblad */
+/*            Securella: logo*/
 
 import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 
 import "./header.css";
 import { tokenExists, isAdmin, tokenPayload } from "../../controller/jwtToken";
+import logo from '../logo/smart_home_logo.png';
 
 /**
  * Header component that displays a navigation bar with links based on the user's authentication status and role.
@@ -46,6 +48,7 @@ export default function Header() {
     <header>
       <Link to={"/"}>
         <div className="header-logo">
+        <img src={logo} alt="Smart Home" className="logo-img" />
           <p>{"SmartHouse"}</p>
         </div>
       </Link>

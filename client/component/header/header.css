@@ -147,3 +147,9 @@ header a {
     display: block;
   }
 }
+
+.logo-img {
+  width: 6rem;   /* adjust if needed */
+  height: auto;  /* Keeps logo in place with ok proportions */
+  margin-bottom: 0.5rem;
+}
