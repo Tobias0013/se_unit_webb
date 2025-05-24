@@ -97,7 +97,7 @@ const DevicesPage: React.FC = () => {
       // sensor data
       const normalizedSensors: IDevice[] = (sensorData || []).map((s: any) => ({
         id: s.sensor_id,
-        name: s.sensor_name,
+        name: s.sensor_name || `${s.location} Sensor`,
         type: "sensor",
         value: s.value,
         room: s.location || 'Other',
