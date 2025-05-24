@@ -29,7 +29,7 @@ export default function Header() {
   let navBarItems = [
     { text: "Home", link: "/" },
     ...(isLoggedIn ? [{ text: "Devices", link: "/devices" }] : []),
-    ...(isLoggedIn ? [{ text: "Add Device", link: "/addDevice" }] : []),
+    ...(isAdminUser ? [{ text: "Add Device", link: "/addDevice" }] : []),
     ...(isLoggedIn ? [{ text: "Schedule", link: "/schedule" }] : []),
     ...(isAdminUser ? [{ text: "Admin", link: "/admin" }] : []),
     isLoggedIn
