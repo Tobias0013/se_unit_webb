@@ -63,7 +63,7 @@ const DevicesPage: React.FC = () => {
     return () => clearInterval(intervalId);
   }, []);
 
-  // Fetch devices AND sensors, merge, fall back to mock if both fail
+  // Fetch devices AND sensors, merge, fall back to default if both fail
   useEffect(() => {
     const loadData = async () => {
       let errorMsg = '';
@@ -87,7 +87,7 @@ const DevicesPage: React.FC = () => {
       // device data
       const normalizedDevices: IDevice[] = (deviceData || []).map((d: any) => ({
         id: d.device_id,
-        name: d.device_name,
+        name: d.device_name, // full string from DB
         type: d.device_type,
         room: d.location || 'Other',
         status: d.status === "on",
@@ -106,8 +106,8 @@ const DevicesPage: React.FC = () => {
 
       const allDevices = [...normalizedDevices, ...normalizedSensors];
 
-      // For each slot in defaultDevices, pick the real device if present,
-      // otherwise fall back to the mock entry.
+      // For each slot in defaultDevices, pick real device if present,
+      // otherwise fall back to the default entry.
       const mergedDevices = defaultDevices.map(def => {
         const real = allDevices.find(d =>
           d.room === def.room && d.type === def.type
@@ -127,7 +127,8 @@ const DevicesPage: React.FC = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       setDevices(prev => prev?.map(device => {
-        if (device.type === "sensor" && typeof device.id === "string" && device.id.startsWith("mock")) {
+        // wiggle any sensor
+        if (device.type === "sensor") { // commented out: && typeof device.id === "string" && device.id.startsWith("mock")
           const variation = parseFloat((Math.random() * 2 - 1).toFixed(1));
           const newTemp = Math.max(18, Math.min(28, (device.value ?? 21) + variation));
           return { ...device, value: parseFloat(newTemp.toFixed(1)) };
@@ -139,23 +140,25 @@ const DevicesPage: React.FC = () => {
   }, []);
 
   // Toggle device
-  const handleToggle = async (device: IDevice) => {
-    try {
-      const isMock = typeof device.id === 'string' && device.id.startsWith('mock');
-      if (!isMock && device.type === 'light') {
-        await toggleDevice(device.id, !device.status);
-      }
-      setDevices((prev) =>
-        prev
-          ? prev.map((d) =>
-              d.id === device.id ? { ...d, status: !d.status } : d
-            )
-          : null
-      );
-    } catch (err: any) {
-      setError(err.message || `Failed to toggle device: ${device.name}`);
+const handleToggle = async (device: IDevice) => {
+  try {
+    const isMock = typeof device.id === 'string' && device.id.startsWith('mock');
+
+    // allow both lights and fans to call backend
+    if (!isMock && (device.type === 'light' || device.type === 'fan')) {
+      await toggleDevice(device.id, !device.status);
     }
-  };
+
+    // showing in UI
+    setDevices(prev =>
+      prev?.map(d =>
+        d.id === device.id ? { ...d, status: !d.status } : d
+      ) ?? null
+    );
+  } catch (err: any) {
+    setError(err.message || `Failed to toggle device: ${device.name}`);
+  }
+};
 
   // Fan speed handler (frontend only/dummy)
   const handleSetFanSpeed = async (device: IDevice, speed: number) => {

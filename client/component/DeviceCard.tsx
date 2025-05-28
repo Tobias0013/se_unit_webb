@@ -76,7 +76,7 @@ const DeviceCard: React.FC<DeviceCardProps> = ({
   return (
     <div className="device-card">
       {/* Show the full name, or fallback */}
-      <h3 className="device-name">{name || 'Unknown Device'}</h3>
+      <h3 className="device-name">{`${device.room} ${device.name}`}</h3>
       <p className="device-type">{typeLabel}</p>
 
       {/* Light & Fan on/off */}
