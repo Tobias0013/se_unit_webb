@@ -1,31 +1,37 @@
 /* Author(s): Securella */
 import React, { useState, useEffect } from "react";
 import { useUser } from "../../component/user/UserContext";
+import "./SettingsPage.css";
 
 const SettingsPage: React.FC = () => {
   const { username, setUsername } = useUser();
-  const [draft, setDraft] = useState(username);
+  const [draft, setDraft] = useState("");
 
-  useEffect(() => { setDraft(username); }, [username]);
+  useEffect(() => {
+    // initialize from context (or sessionStorage)
+    setDraft(username);
+  }, [username]);
 
   const save = () => {
     setUsername(draft);
     sessionStorage.setItem("username", draft);
-    /* no full reload needed—context update will re‐render header */
+    alert("Saved!");
   };
 
   return (
-    <div className="settings-page">
+    <div className="page-container">
       <h1>Settings</h1>
       <div className="form-group">
         <label>Your display name:</label>
         <input
           type="text"
           value={draft}
-          onChange={e => setDraft(e.target.value)}
+          onChange={(e) => setDraft(e.target.value)}
         />
       </div>
-      <button onClick={save}>Save</button>
+      <button className="primary-btn" onClick={save}>
+        Save
+      </button>
     </div>
   );
 };
