@@ -9,7 +9,9 @@ import { tokenExists, isAdmin } from "../../controller/jwtToken";
 import logo from "../logo/smart_home_logo.png";
 
 // ← IMPORT UserContext hook
-import { useUser } from "../user/UserContext";
+import { useUser } from "../../component/user/UserContext";
+import { NotificationBell } from "../notifications/NotificationBell";
+import { useNavigate } from "react-router-dom";
 
 export default function Header() {
   const location = useLocation();
@@ -19,6 +21,7 @@ export default function Header() {
 
   // ← PULL username from context
   const { username } = useUser();
+  const navigate = useNavigate();
 
   // build nav items
   const navBarItems = [
@@ -28,7 +31,7 @@ export default function Header() {
     ...(isLoggedIn ? [{ text: "Schedule", link: "/schedule" }] : []),
     ...(isAdminUser ? [{ text: "Admin", link: "/admin" }] : []),
     ...(isLoggedIn
-      ? [{ text: "🔔 Notification Center", link: "/notifications" }]
+      ? [{ text: "🔔 Notification Center", link: "#" }]
       : []),
     ...(isLoggedIn
       ? [{ text: "⚙️ Settings", link: "/settings" }]
@@ -73,11 +76,6 @@ export default function Header() {
               <Link to={item.link}>{item.text}</Link>
             </li>
           ))}
-
-          {/* showing username as plain text */}
-          {isLoggedIn && (
-            <li className="header-username">{username}</li>
-          )}
         </ul>
       </div>
     </header>

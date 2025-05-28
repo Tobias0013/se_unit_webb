@@ -20,7 +20,7 @@ const DeviceList: React.FC<DeviceListProps> = ({
   onCommand,
   brewingState,
   audioRefs,
-  trackIndex,
+  trackIndex
 }) => {
   if (devices === null) {
     return <div className="device-list error">No device data available.</div>;

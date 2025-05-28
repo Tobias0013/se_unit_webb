@@ -311,7 +311,9 @@ const DevicesPage: React.FC = () => {
           <span className="user-name">User</span>
         </div>
         {/* <button className="notif-btn">🔔 Notification Center</button> */}
-        {/*<button className="settings-btn">⚙️ Settings</button> */}
+        <button className="settings-btn" onClick={() => navigate("/settings")}>
+          ⚙️ Settings
+        </button>
       </header>
 
       <section className="greeting-section">

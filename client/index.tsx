@@ -46,7 +46,6 @@ root.render(
               NotificationBell renders its own dropdown on click.
             */}
             <Header />
-            <NotificationBell />
 
             <Routes>
               <Route path="/" element={<HomePage />} />

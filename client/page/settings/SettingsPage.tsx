@@ -1,21 +1,17 @@
 /* Author(s): Securella */
-import React, { useState } from "react";
-
-// IMPORT UserContext hook
+import React, { useState, useEffect } from "react";
 import { useUser } from "../../component/user/UserContext";
-import "./SettingsPage.css"; // if you have styles
 
 const SettingsPage: React.FC = () => {
-  // pull current username and setter from context
   const { username, setUsername } = useUser();
-
-  // local draft state to edit
   const [draft, setDraft] = useState(username);
+
+  useEffect(() => { setDraft(username); }, [username]);
 
   const save = () => {
     setUsername(draft);
-    // optional visual feedback
-    alert("Username saved!");
+    sessionStorage.setItem("username", draft);
+    /* no full reload needed—context update will re‐render header */
   };
 
   return (
@@ -29,9 +25,7 @@ const SettingsPage: React.FC = () => {
           onChange={e => setDraft(e.target.value)}
         />
       </div>
-      <button className="btn-save" onClick={save}>
-        Save
-      </button>
+      <button onClick={save}>Save</button>
     </div>
   );
 };

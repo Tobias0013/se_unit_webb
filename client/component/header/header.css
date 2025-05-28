@@ -50,6 +50,7 @@ header a {
   justify-content: center;
   list-style-type: none;
   padding-left: 0;
+  gap: 2rem;
 
   margin-right: 4rem;
 }
@@ -160,4 +161,22 @@ header a {
   font-weight: bold;
   color: #2d3748;
   cursor: default;
+}
+
+.header-notif,
+.header-user {
+  display: flex;
+  align-items: center;
+}
+
+.user-avatar {
+  background: #5a8dee;
+  color: white;
+  border-radius: 50%;
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 0.5rem;
 }
