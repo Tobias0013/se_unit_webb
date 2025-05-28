@@ -8,16 +8,20 @@ interface DeviceCardProps {
   onToggle: (device: IDevice) => Promise<void>;
   onSetFanSpeed: (device: IDevice, speed: number) => Promise<void>;
   onCommand: (device: IDevice, command: string) => Promise<void>;
+  brewingState: Record<string,boolean>;
+  audioRefs: Record<string,HTMLAudioElement>;
 }
 
 /**
- * Renders a single device card with the correct controls for its type.
+ * Renders single device card with correct controls for its type.
  */
 const DeviceCard: React.FC<DeviceCardProps> = ({
   device,
   onToggle,
   onSetFanSpeed,
-  onCommand
+  onCommand,
+  brewingState,
+  audioRefs
 }) => {
   if (!device) {
     return (
@@ -75,7 +79,7 @@ const DeviceCard: React.FC<DeviceCardProps> = ({
 
   return (
     <div className="device-card">
-      {/* Show the full name, or fallback */}
+      {/* Show full name, or fallback */}
       <h3 className="device-name">{`${device.room} ${device.name}`}</h3>
       <p className="device-type">{typeLabel}</p>
 
@@ -114,14 +118,14 @@ const DeviceCard: React.FC<DeviceCardProps> = ({
 
       {/* Buzzer */}
       {type === 'buzzer' && (
-        <button className="toggle-btn" onClick={makeCommandHandler('ring')}>
+        <button className="toggle-btn" onClick={() => onCommand(device, 'ring')}>
           Ring
         </button>
       )}
 
       {/* Coffee Machine */}
       {type === 'coffee_machine' && (
-        <button className="toggle-btn" onClick={makeCommandHandler('brew')}>
+        <button className="toggle-btn" onClick={() => onCommand(device, 'brew')}>
           Brew Coffee
         </button>
       )}
@@ -129,9 +133,9 @@ const DeviceCard: React.FC<DeviceCardProps> = ({
       {/* Media Player controls */}
       {type === 'mediaplayer' && (
         <div style={{ display: 'flex', gap: '0.5rem' }}>
-          <button onClick={makeCommandHandler('prev')}>⏮</button>
-          <button onClick={makeCommandHandler('play')}>▶️</button>
-          <button onClick={makeCommandHandler('next')}>⏭</button>
+          <button onClick={() => onCommand(device, 'prev')}>⏮</button>
+          <button onClick={() => onCommand(device, 'play')}>▶️</button>
+          <button onClick={() => onCommand(device, 'next')}>⏭</button>
         </div>
       )}
     </div>

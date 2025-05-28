@@ -1,5 +1,5 @@
 /* Author(s): Securella */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import './style.css';
 import { toast } from "react-toastify";
 import RoomCard from '../../component/RoomCard';
@@ -46,6 +46,16 @@ const DevicesPage: React.FC = () => {
   const [devices, setDevices] = useState<IDevice[] | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  // brew‐state per device, to show “Brewing…”
+  const [brewingState, setBrewingState] = useState<Record<string,boolean>>({});
+  // media player & playlist
+  const audioRefs = useRef<Record<string, HTMLAudioElement>>({});
+  const playlist = [
+    '/sounds/song1.mp3',
+    '/sounds/song2.mp3',
+    '/sounds/song3.mp3',
+  ];
+  const [trackIndex, setTrackIndex] = useState<Record<string,number>>({});
 
   // Date/time state
   const [timeString, setTimeString] = useState<string>('');
@@ -63,7 +73,7 @@ const DevicesPage: React.FC = () => {
     return () => clearInterval(intervalId);
   }, []);
 
-  // Fetch devices AND sensors, merge, fall back to default if both fail
+  // Fetch devices and sensors, merge, fall back to default if both fail
   useEffect(() => {
     const loadData = async () => {
       let errorMsg = '';
@@ -144,8 +154,8 @@ const handleToggle = async (device: IDevice) => {
   try {
     const isMock = typeof device.id === 'string' && device.id.startsWith('mock');
 
-    // allow both lights and fans to call backend
-    if (!isMock && (device.type === 'light' || device.type === 'fan')) {
+    // allow lights fans, buzzers to call backend
+    if (!isMock && (device.type === 'light' || device.type === 'fan' || device.type === 'buzzer')) {
       await toggleDevice(device.id, !device.status);
     }
 
@@ -155,6 +165,12 @@ const handleToggle = async (device: IDevice) => {
         d.id === device.id ? { ...d, status: !d.status } : d
       ) ?? null
     );
+    // auto-turn-off for buzzer
+    if (device.type === 'buzzer') {
+      toast.info(`${device.room} buzzer is ringing`);
+      // auto-off
+      setTimeout(() => handleToggle(device), 3000);
+    }
   } catch (err: any) {
     setError(err.message || `Failed to toggle device: ${device.name}`);
   }
@@ -203,10 +219,61 @@ const handleToggle = async (device: IDevice) => {
     toast.success("Mood applied to devices!");
   };
 
+  // commented out dunny handleCommand
+  // const handleCommand = async (device: IDevice, command: string) => {
+    // toast.info(`Command "${command}" sent to ${device.name}`);
+    // return Promise.resolve();
+  // };
+
   const handleCommand = async (device: IDevice, command: string) => {
-    toast.info(`Command "${command}" sent to ${device.name}`);
-    return Promise.resolve();
+    // Buzzer “ring” just re-use your toggle (which already auto-turns off in 3s)
+    if (device.type === 'buzzer' && command === 'ring') {
+      await handleToggle(device);
+      return;
+    }
+  
+  // coffee machine brew
+    if (device.type === 'coffee_machine' && command === 'brew') {
+      setBrewingState(s => ({ ...s, [device.id]: true }));
+      const coffeeSound = new Audio('/sounds/coffee.mp3');
+      coffeeSound.play();
+      setTimeout(() => {
+        setBrewingState(s => ({ ...s, [device.id]: false }));
+        coffeeSound.pause();
+      }, 5000);
+      return;
+    }
+  
+    // Media player
+    if (device.type === 'mediaplayer') {
+      if (!audioRefs.current[device.id]) {
+        const idx = trackIndex[device.id] || 0;
+        audioRefs.current[device.id] = new Audio(playlist[idx]);
+      }
+      const player = audioRefs.current[device.id]!;
+      let idx = trackIndex[device.id] || 0;
+  
+      switch (command) {
+        case 'play':
+          return player.play();
+        case 'pause':
+          return player.pause();
+        case 'next':
+          player.pause();
+          idx = (idx + 1) % playlist.length;
+          setTrackIndex(t => ({ ...t, [device.id]: idx }));
+          audioRefs.current[device.id] = new Audio(playlist[idx]);
+          return audioRefs.current[device.id].play();
+        case 'prev':
+          player.pause();
+          idx = (idx - 1 + playlist.length) % playlist.length;
+          setTrackIndex(t => ({ ...t, [device.id]: idx }));
+          audioRefs.current[device.id] = new Audio(playlist[idx]);
+          return audioRefs.current[device.id].play();
+      }
+    }
   };
+  
 
   if (loading) {
     return (
@@ -262,6 +329,8 @@ const handleToggle = async (device: IDevice) => {
                 onToggle={handleToggle}
                 onSetFanSpeed={handleSetFanSpeed}
                 onCommand={handleCommand}
+                brewingState={brewingState}
+                audioRefs={audioRefs.current}
               />
             );
           })}
