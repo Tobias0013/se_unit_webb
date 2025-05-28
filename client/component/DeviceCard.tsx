@@ -10,6 +10,7 @@ interface DeviceCardProps {
   onCommand: (device: IDevice, command: string) => Promise<void>;
   brewingState: Record<string,boolean>;
   audioRefs: Record<string,HTMLAudioElement>;
+  trackIndex: Record<string,number>;
 }
 
 /**
@@ -21,7 +22,8 @@ const DeviceCard: React.FC<DeviceCardProps> = ({
   onSetFanSpeed,
   onCommand,
   brewingState,
-  audioRefs
+  audioRefs,
+  trackIndex
 }) => {
   if (!device) {
     return (
@@ -80,7 +82,7 @@ const DeviceCard: React.FC<DeviceCardProps> = ({
   return (
     <div className="device-card">
       {/* Show full name, or fallback */}
-      <h3 className="device-name">{`${device.room} ${device.name}`}</h3>
+      <h3 className="device-name">{device.name}</h3> {/*`removed: ${device.room} ${device.name}`*/}
       <p className="device-type">{typeLabel}</p>
 
       {/* Light & Fan on/off */}
@@ -135,7 +137,11 @@ const DeviceCard: React.FC<DeviceCardProps> = ({
         <div style={{ display: 'flex', gap: '0.5rem' }}>
           <button onClick={() => onCommand(device, 'prev')}>⏮</button>
           <button onClick={() => onCommand(device, 'play')}>▶️</button>
+          <button onClick={()=>onCommand(device,'pause')}>❚❚</button>
           <button onClick={() => onCommand(device, 'next')}>⏭</button>
+          <span className="track-info">
+            Track { (trackIndex[device.id] ?? 0) + 1 }
+          </span>
         </div>
       )}
     </div>

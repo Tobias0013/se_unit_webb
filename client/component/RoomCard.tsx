@@ -12,6 +12,7 @@ interface RoomCardProps {
   onCommand: (device: IDevice, command: string) => Promise<void>; // <-- NEW
   brewingState: Record<string,boolean>; // <-- NEW, for coffee
   audioRefs: Record<string,HTMLAudioElement>; // <-- NEW, for mediaplayer
+  trackIndex: Record<string,number>;
 }
 
 const RoomCard: React.FC<RoomCardProps> = ({
@@ -21,7 +22,8 @@ const RoomCard: React.FC<RoomCardProps> = ({
   onSetFanSpeed,
   onCommand,   // <-- NEW
   brewingState,
-  audioRefs
+  audioRefs,
+  trackIndex
 }) => (
   <div className="room-card">
     <div className="room-header">
@@ -38,6 +40,7 @@ const RoomCard: React.FC<RoomCardProps> = ({
       onCommand={onCommand}   // <-- NEW
       brewingState={brewingState} // <-- NEW
       audioRefs={audioRefs} // <-- NEW
+      trackIndex={trackIndex}
     />
   </div>
 );

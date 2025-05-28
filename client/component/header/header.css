@@ -154,3 +154,10 @@ header a {
   height: auto;  /* Keeps logo in place with ok proportions */
   /* removed: margin-bottom: 0.5rem; */
 }
+
+.header-username {
+  padding: 0.5rem 1rem;
+  font-weight: bold;
+  color: #2d3748;
+  cursor: default;
+}
