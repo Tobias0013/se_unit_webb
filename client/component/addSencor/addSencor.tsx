@@ -67,7 +67,7 @@ export default function AddDevice() {
 
   return (
     <div className="add-device-container">
-      <h1 className="add-device-title">Unregisterd Sencors</h1>
+      <h1 className="add-device-title">Unregistered Sensors</h1>
       <ul className="device-list">
         <li className="device-item-header">
           <span className="device-id-header">ID</span>

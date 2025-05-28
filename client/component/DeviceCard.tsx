@@ -1,18 +1,30 @@
+/* Author(s): Securella (updated) */
 import React, { useCallback } from 'react';
 import { toast } from "react-toastify";
 import { IDevice } from '../controller/deviceController';
 
 interface DeviceCardProps {
-  device: IDevice | null;  // Allow null to handle potential missing data
+  device: IDevice | null;
   onToggle: (device: IDevice) => Promise<void>;
   onSetFanSpeed: (device: IDevice, speed: number) => Promise<void>;
+  onCommand: (device: IDevice, command: string) => Promise<void>;
+  brewingState: Record<string,boolean>;
+  audioRefs: Record<string,HTMLAudioElement>;
+  trackIndex: Record<string,number>;
 }
 
 /**
- * Renders single device card with controls depending on device type (light, fan, sensor).
- * Some fallback logic if device data is missing / invalid.
+ * Renders single device card with correct controls for its type.
  */
-const DeviceCard: React.FC<DeviceCardProps> = ({ device, onToggle, onSetFanSpeed }) => {
+const DeviceCard: React.FC<DeviceCardProps> = ({
+  device,
+  onToggle,
+  onSetFanSpeed,
+  onCommand,
+  brewingState,
+  audioRefs,
+  trackIndex
+}) => {
   if (!device) {
     return (
       <div className="device-card error">
@@ -21,54 +33,66 @@ const DeviceCard: React.FC<DeviceCardProps> = ({ device, onToggle, onSetFanSpeed
     );
   }
 
-  const { id, name, type, status, value } = device;
+  const { name, type, status, value } = device;
 
-  const typeLabel = type === 'light' ? '💡 Light' :
-                    type === 'fan' ? '🌀 Fan' :
-                    type === 'sensor' ? '🌡 Sensor' :
-                    type;
+  // A little icon + label for each type
+  const typeLabel = (() => {
+    switch (type) {
+      case 'light':           return '💡 Light';
+      case 'fan':             return '🌀 Fan';
+      case 'sensor':          return '🌡 Sensor';
+      case 'buzzer':          return '🔔 Buzzer';
+      case 'coffee_machine':  return '☕ Coffee';
+      case 'mediaplayer':     return '🎵 Media Player';
+      default:                return type;
+    }
+  })();
 
-  // Handler for toggling device on/off
+  // All on/off toggles (light + fan)
   const handleToggleClick = useCallback(async () => {
     try {
-      if (type === 'light' || type === 'fan') {
-        await onToggle(device);
-      }
+      await onToggle(device);
     } catch (err) {
       console.error('Error toggling device:', err);
       toast.error("Failed to toggle device");
     }
-  }, [device, onToggle, type]);
+  }, [device, onToggle]);
 
-  // Handler for fan speed slider
+  // Fan speed slider
   const handleFanSpeedChange = useCallback(
     async (e: React.ChangeEvent<HTMLInputElement>) => {
       try {
         const speed = parseInt(e.target.value, 10);
-        if (type === 'fan') {
-          await onSetFanSpeed(device, speed);
-        }
+        await onSetFanSpeed(device, speed);
       } catch (err) {
         console.error('Error setting fan speed:', err);
         toast.error("Failed to set fan speed");
       }
     },
-    [device, onSetFanSpeed, type]
+    [device, onSetFanSpeed]
   );
+
+  // Helper to fire arbitrary commands (buzzer, coffee, media)
+  const makeCommandHandler = (cmd: string) => () =>
+    onCommand(device, cmd).catch(err => {
+      console.error('Error sending command:', err);
+      toast.error("Command failed");
+    });
 
   return (
     <div className="device-card">
-      <h3 className="device-name">
-        {name?.replace(new RegExp(`\\b${type}\\b`, 'i'), '').trim() || 'Unknown Device'}
-      </h3>
+      {/* Show full name, or fallback */}
+      <h3 className="device-name">{device.name}</h3> {/*`removed: ${device.room} ${device.name}`*/}
       <p className="device-type">{typeLabel}</p>
 
+      {/* Light & Fan on/off */}
       {(type === 'light' || type === 'fan') && (
         <button className="toggle-btn" onClick={handleToggleClick}>
           {status ? 'Turn Off' : 'Turn On'}
         </button>
       )}
 
+      {/* Fan speed */}
       {type === 'fan' && (
         <div className="fan-control">
           <label>Fan Speed:</label>
@@ -80,12 +104,45 @@ const DeviceCard: React.FC<DeviceCardProps> = ({ device, onToggle, onSetFanSpeed
             onChange={handleFanSpeedChange}
             style={{ width: '100px', marginLeft: '10px' }}
           />
-          <span style={{ marginLeft: '10px', fontWeight: 'bold' }}>{value ?? 0}</span>
+          <span style={{ marginLeft: '10px', fontWeight: 'bold' }}>
+            {value ?? 0}
+          </span>
         </div>
       )}
 
+      {/* Sensor reading */}
       {type === 'sensor' && (
-        <p className="sensor-value">Temperature: {value !== undefined ? `${value}°C` : '--'}</p>
+        <p className="sensor-value">
+          Temperature:&nbsp;
+          {value !== undefined ? `${value}°C` : '--'}
+        </p>
+      )}
+
+      {/* Buzzer */}
+      {type === 'buzzer' && (
+        <button className="toggle-btn" onClick={() => onCommand(device, 'ring')}>
+          Ring
+        </button>
+      )}
+
+      {/* Coffee Machine */}
+      {type === 'coffee_machine' && (
+        <button className="toggle-btn" onClick={() => onCommand(device, 'brew')}>
+          Brew Coffee
+        </button>
+      )}
+
+      {/* Media Player controls */}
+      {type === 'mediaplayer' && (
+        <div style={{ display: 'flex', gap: '0.5rem' }}>
+          <button onClick={() => onCommand(device, 'prev')}>⏮</button>
+          <button onClick={() => onCommand(device, 'play')}>▶️</button>
+          <button onClick={()=>onCommand(device,'pause')}>❚❚</button>
+          <button onClick={() => onCommand(device, 'next')}>⏭</button>
+          <span className="track-info">
+            Track { (trackIndex[device.id] ?? 0) + 1 }
+          </span>
+        </div>
       )}
     </div>
   );

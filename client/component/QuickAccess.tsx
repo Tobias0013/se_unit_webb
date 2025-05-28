@@ -1,12 +1,16 @@
+/* Author(s): Securella */
 import React from 'react';
 import './QuickAccess.css';
 
-const QuickAccess: React.FC = () => (
+const scenes = ['Wake Up', 'Chill', 'Party', 'Good Night'];
+
+const QuickAccess: React.FC<{ onQuickAccess: (scene: string) => void }> = ({ onQuickAccess }) => (
   <div className="quick-access">
-    <button>Wake Up</button>
-    <button>Chill</button>
-    <button>Party</button>
-    <button>Good Night</button>
+    {scenes.map((scene) => (
+      <button key={scene} onClick={() => onQuickAccess(scene)}>
+        {scene}
+      </button>
+    ))}
   </div>
 );
 

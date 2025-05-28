@@ -10,5 +10,5 @@
     "skipLibCheck": true
   },
   "exclude": ["dist"],
-  "include": ["client/**/*.ts", "client/**/*.tsx"]
+  "include": ["client/**/*.ts", "client/**/*.tsx", "client/controller/sensorController.js"]
 }

@@ -1,13 +1,16 @@
+/* Author(s): Securella */
 import API from './API/connection';
+import { toast } from 'react-toastify';
 
 // import { API_URL } from './config'; // <-- NOT NEEDED
-// const API_BASE = API_URL; <-- COMMENTED OUT TO CHANGE TO CENTRALIZED API
+// const API_BASE = API_URL;          // <-- COMMENTED OUT TO CHANGE TO CENTRALIZED API
 
 /** Interface describing the device object */
 export interface IDevice {
   id: string;
   name: string;
-  type: 'light' | 'fan' | 'sensor';
+  // expanded to support buzzer, coffee machine, media player
+  type: 'light' | 'fan' | 'sensor' | 'buzzer' | 'coffee_machine' | 'mediaplayer';
   status?: boolean; // on/off status
   value?: number;   // fan speed / temperature etc.
   room?: string;    // Living Room, Kitchen, etc.
@@ -38,38 +41,50 @@ export async function fetchDevices(): Promise<IDevice[]> {
     return response.data;
   } catch (error: any) {
     console.error('Error fetching devices:', error);
-    throw new Error(error?.message || 'Failed to fetch devices from the server.');
+    throw new Error(
+      error.response?.data?.message ||
+      error?.message ||
+      'Failed to fetch devices from the server.'
+    );
   }
 }
 
 /** 
- * PATCH /devices/{device_id}/toggle - Toggle light status
+ * PATCH /devices/{device_id}/toggle - Toggle or send command to any device
  */
-export async function toggleDevice(deviceId: string, newState: boolean): Promise<void> {
+export async function toggleDevice(
+  deviceId: string,
+  // boolean = on/off, string = custom command (e.g. nextTrack)
+  newState: boolean | string
+): Promise<void> {
+  // map booleans → "on"/"off", pass strings through
+  const status = typeof newState === 'boolean'
+    ? (newState ? 'on' : 'off')
+    : newState;
+
   try {
-    const status = newState ? "on" : "off";
     // await axios.patch(`${API_BASE}/devices/${deviceId}/toggle`, { status }, getAuthHeaders()); <-- OLD
     await API.patch(`/devices/${deviceId}/toggle`, { status }, getAuthHeaders());
   } catch (error: any) {
-    console.error("Error toggling device:", error);
+    console.error("Error sending command to device:", error);
     throw new Error(
-      error?.message || `Failed to toggle device with ID ${deviceId}.`
+      error.response?.data?.message ||
+      error?.message ||
+      `Failed to send "${status}" to device ${deviceId}.`
     );
   }
 }
 
 /** 
  * PUT /devices/{device_id} - Update fan speed 
+ * (dummy: frontend only, no backend call)
  */
-export async function updateFanSpeed(deviceId: string, speed: number): Promise<void> {
-  try {
-    // await axios.put(`${API_BASE}/devices/${deviceId}`, { value: speed }, getAuthHeaders()); <-- OLD
-    await API.put(`/devices/${deviceId}`, { value: speed }, getAuthHeaders());
-  } catch (error: any) {
-    console.error("Error updating fan speed:", error);
-    throw new Error(
-      error?.message ||
-      `Failed to update fan speed for device with ID ${deviceId}.`
-    );
-  }
+export async function updateFanSpeed(
+  deviceId: string,
+  speed: number
+): Promise<void> {
+  // await axios.put(`${API_BASE}/devices/${deviceId}`, { value: speed }, getAuthHeaders()); <-- OLD
+  // await API.put(`/devices/${deviceId}`, { value: speed }, getAuthHeaders()); <-- commented out on purpose
+  console.info(`(dummy) Set fan ${deviceId} speed to ${speed}`);
+  return Promise.resolve();
 }
